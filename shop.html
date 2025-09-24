@@ -11,4 +11,46 @@
 
 <body>
   <h1>My Pokémon Collection</h1>
-  <div class="card-grid" id="card-cont
+  <div class="card-grid" id="card-container">Loading cards...</div>
+
+  <script>
+    fetch('pokemon-cards.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            displayCards(results.data);
+          }
+        });
+      })
+      .catch(error => {
+        document.getElementById('card-container').innerText = 'Error loading CSV: ' + error;
+      });
+
+    function displayCards(cards) {
+      const container = document.getElementById('card-container');
+      container.innerHTML = ''; // clear loading text
+
+      cards.forEach(card => {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'card';
+
+        cardDiv.innerHTML = `
+          <h2>${card['Product Name']}</h2>
+          <p><strong>Set:</strong> ${card['Set']}</p>
+          <p><strong>Card Number:</strong> ${card['Card Number']}</p>
+          <p><strong>Rarity:</strong> ${card['Rarity']}</p>
+          <p><strong>Variance:</strong> ${card['Variance']}</p>
+          <p><strong>Grade:</strong> ${card['Grade']}</p>
+          <p><strong>Condition:</strong> ${card['Card Condition']}</p>
+          <p><strong>Quantity:</strong> ${card['Quantity']}</p>
+        `;
+
+        container.appendChild(cardDiv);
+      });
+    }
+  </script>
+</body>
+</html>
