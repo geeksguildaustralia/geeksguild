@@ -1,11 +1,10 @@
-<h1>Pokémon Cards</h1>
-<div class="card-grid" id="card-container"></div>
+<h1>My Pokémon Collection</h1>
+<div class="card-grid" id="card-container">Loading cards...</div>
 
-<!-- PapaParse library from CDN -->
+<!-- PapaParse from CDN -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <script>
-  // Load and parse CSV file
   fetch('pokemon-cards.csv')
     .then(response => response.text())
     .then(csvText => {
@@ -17,21 +16,29 @@
         }
       });
     })
-    .catch(error => console.error('Error loading CSV:', error));
+    .catch(error => {
+      document.getElementById('card-container').innerText = 'Error loading CSV: ' + error;
+    });
 
-  // Display cards
-  function displayCards(data) {
+  function displayCards(cards) {
     const container = document.getElementById('card-container');
-    data.forEach(card => {
+    container.innerHTML = ''; // clear loading text
+
+    cards.forEach(card => {
       const cardDiv = document.createElement('div');
       cardDiv.className = 'card';
+
       cardDiv.innerHTML = `
-        <img src="${card.ImageURL}" alt="${card.Name}">
-        <h2>${card.Name}</h2>
-        <p><strong>Type:</strong> ${card.Type}</p>
-        <p><strong>HP:</strong> ${card.HP}</p>
-        <p><strong>Rarity:</strong> ${card.Rarity}</p>
+        <h2>${card['Product Name']}</h2>
+        <p><strong>Set:</strong> ${card['Set']}</p>
+        <p><strong>Card Number:</strong> ${card['Card Number']}</p>
+        <p><strong>Rarity:</strong> ${card['Rarity']}</p>
+        <p><strong>Variance:</strong> ${card['Variance']}</p>
+        <p><strong>Grade:</strong> ${card['Grade']}</p>
+        <p><strong>Condition:</strong> ${card['Card Condition']}</p>
+        <p><strong>Quantity:</strong> ${card['Quantity']}</p>
       `;
+
       container.appendChild(cardDiv);
     });
   }
