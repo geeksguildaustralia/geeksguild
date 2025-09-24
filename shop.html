@@ -20,6 +20,14 @@
     <h2>Complete Product List</h2>
     <div id="csv-table" style="overflow-x: auto;">
 
+  
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 PokéCard Palace</p>
+  </footer>
+
   <script>
     fetch('pokemon-cards.csv')
       .then(res => res.text())
@@ -55,12 +63,6 @@
         document.getElementById('csv-table').appendChild(table);
       });
   </script>
-    </div>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 PokéCard Palace</p>
-  </footer>
 
 </body>
 </html>
