@@ -68,8 +68,7 @@ nav a:hover {
   border-bottom-right-radius: 60px;
 }
 
-
-  /* ========== Table Styles ========== */
+/* ========== Table Styles ========== */
 table {
   width: 100%;
   border-collapse: separate;
@@ -133,9 +132,9 @@ tr:hover {
     left: 1rem;
     top: 0.5rem;
   }
+}
 
-
-  /* ========== Card Grid Styles ========== */
+/* ========== Card Grid Styles ========== */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -168,6 +167,4 @@ tr:hover {
 .card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
-}
-
 }
