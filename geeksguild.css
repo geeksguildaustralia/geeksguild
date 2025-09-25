@@ -101,39 +101,6 @@ tr:hover {
   transition: background-color 0.3s;
 }
 
-/* ========== Responsive Table ========== */
-@media (max-width: 768px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-
-  thead {
-    display: none;
-  }
-
-  tr {
-    margin-bottom: 1rem;
-    background: var(--white);
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    padding: 1rem;
-  }
-
-  td {
-    padding: 0.5rem 1rem;
-    position: relative;
-  }
-
-  td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: var(--rose);
-    position: absolute;
-    left: 1rem;
-    top: 0.5rem;
-  }
-}
-
 /* ========== Card Grid Styles ========== */
 .card-grid {
   display: grid;
@@ -176,3 +143,38 @@ tr:hover {
   gap: 1.5rem;
   margin-top: 2rem;
 }
+
+
+/* ========== Responsive Table ========== */
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 1rem;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    padding: 1rem;
+  }
+
+  td {
+    padding: 0.5rem 1rem;
+    position: relative;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--rose);
+    position: absolute;
+    left: 1rem;
+    top: 0.5rem;
+  }
+}
+
