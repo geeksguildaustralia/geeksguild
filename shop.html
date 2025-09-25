@@ -1,11 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Geek's Guild
-  </title>
+  <title>Geek's Guild</title>
   <link rel="stylesheet" href="geeksguild.css" />
 </head>
 <body>
@@ -16,14 +13,12 @@
       <a href="shop.html">Shop</a>
     </nav>
   </header>
-<body>
 
   <main class="hero">
     <h2>Catch 'Em All… Before They're Gone!</h2>
     <p></p>
     <a href="shop.html" class="btn">Browse Cards</a>
   </main>
-
 
   <h1>Pokémon Card Collection</h1>
   <div id="tableContainer">Loading data...</div>
@@ -36,16 +31,24 @@
       return { headers, rows };
     }
 
-    function renderTable(headers, rows) {
-      let html = '<table><thead><tr>';
-      headers.forEach(header => html += `<th>${header}</th>`);
-      html += '</tr></thead><tbody>';
+    // New function: Render cards instead of table
+    function renderCards(headers, rows) {
+      let html = '<div class="card-grid">';
       rows.forEach(row => {
-        html += '<tr>';
-        row.forEach(cell => html += `<td>${cell}</td>`);
-        html += '</tr>';
+        html += `
+          <div class="card">
+            <h3>${row[0]}</h3>
+            <p><strong>Set:</strong> ${row[1]}</p>
+            <p><strong>Card #:</strong> ${row[2]}</p>
+            <p><strong>Rarity:</strong> ${row[3]}</p>
+            <p><strong>Variance:</strong> ${row[4]}</p>
+            <p><strong>Grade:</strong> ${row[5]}</p>
+            <p><strong>Condition:</strong> ${row[6]}</p>
+            <p><strong>Quantity:</strong> ${row[7]}</p>
+          </div>
+        `;
       });
-      html += '</tbody></table>';
+      html += '</div>';
       return html;
     }
 
@@ -56,8 +59,8 @@
       })
       .then(csvText => {
         const { headers, rows } = parseCSV(csvText);
-        const tableHTML = renderTable(headers, rows);
-        document.getElementById('tableContainer').innerHTML = tableHTML;
+        const cardsHTML = renderCards(headers, rows);
+        document.getElementById('tableContainer').innerHTML = cardsHTML;
       })
       .catch(error => {
         document.getElementById('tableContainer').innerText = 'Error loading CSV: ' + error.message;

@@ -133,4 +133,40 @@ tr:hover {
     left: 1rem;
     top: 0.5rem;
   }
+
+
+  /* ========== Card Grid Styles ========== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
+
+.card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.3rem;
+  color: var(--rose);
+}
+
+.card p {
+  margin: 0.3rem 0;
+  color: var(--dark);
+  font-size: 0.95rem;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+}
+
