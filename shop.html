@@ -21,18 +21,37 @@
   </main>
 
   <h1>Pokémon Card Collection</h1>
+
+  <!-- 🔽 Filter Dropdowns -->
+  <div class="filter-bar">
+    <label for="setFilter">Filter by Set:</label>
+    <select id="setFilter">
+      <option value="all">All Sets</option>
+    </select>
+
+    <label for="variantFilter">Variant:</label>
+    <select id="variantFilter">
+      <option value="all">All</option>
+      <option value="Holo">Holo & Reverse Holo</option>
+      <option value="Non-Holo">Non-Holo</option>
+    </select>
+  </div>
+
+  <!-- 🧩 Cards get rendered here -->
   <div id="tableContainer">Loading data...</div>
 
   <script>
+    let allCards = [];
+    let headers = [];
+
     function parseCSV(text) {
       const lines = text.trim().split('\n');
-      const headers = lines[0].split(',').map(h => h.trim());
+      headers = lines[0].split(',').map(h => h.trim());
       const rows = lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
-      return { headers, rows };
+      return rows;
     }
 
-    // New function: Render cards instead of table
-    function renderCards(headers, rows) {
+    function renderCards(rows) {
       let html = '<div class="card-grid">';
       rows.forEach(row => {
         html += `
@@ -49,30 +68,61 @@
         `;
       });
       html += '</div>';
-      return html;
+      document.getElementById('tableContainer').innerHTML = html;
     }
 
+    function populateSetDropdown() {
+      const setFilter = document.getElementById('setFilter');
+      const sets = new Set(allCards.map(row => row[1]));
+      sets.forEach(setName => {
+        const opt = document.createElement('option');
+        opt.value = setName;
+        opt.textContent = setName;
+        setFilter.appendChild(opt);
+      });
+    }
+
+    function applyFilters() {
+      const selectedSet = document.getElementById('setFilter').value;
+      const selectedVariant = document.getElementById('variantFilter').value;
+
+      const filtered = allCards.filter(row => {
+        const cardSet = row[1];
+        const variance = row[4].toLowerCase();
+
+        if (selectedSet !== 'all' && cardSet !== selectedSet) return false;
+
+        if (selectedVariant === 'Holo') {
+          return variance.includes('holo');
+        }
+
+        if (selectedVariant === 'Non-Holo') {
+          return !variance.includes('holo');
+        }
+
+        return true;
+      });
+
+      renderCards(filtered);
+    }
+
+    // Fetch and initialize
     fetch('pokemon-cards.csv')
       .then(response => {
         if (!response.ok) throw new Error('Failed to load CSV file.');
         return response.text();
       })
       .then(csvText => {
-        const { headers, rows } = parseCSV(csvText);
-        const cardsHTML = renderCards(headers, rows);
-        document.getElementById('tableContainer').innerHTML = cardsHTML;
+        allCards = parseCSV(csvText);
+        populateSetDropdown();
+        renderCards(allCards);
+
+        document.getElementById('setFilter').addEventListener('change', applyFilters);
+        document.getElementById('variantFilter').addEventListener('change', applyFilters);
       })
       .catch(error => {
         document.getElementById('tableContainer').innerText = 'Error loading CSV: ' + error.message;
       });
   </script>
-
-  <div class="card-grid" style="border: 1px solid #ccc; padding: 10px;">
-  <div class="card" style="background: #eee; padding: 10px;">Card 1</div>
-  <div class="card" style="background: #eee; padding: 10px;">Card 2</div>
-  <div class="card" style="background: #eee; padding: 10px;">Card 3</div>
-  <div class="card" style="background: #eee; padding: 10px;">Card 4</div>
-</div>
-
 </body>
 </html>

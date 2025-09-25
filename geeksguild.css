@@ -173,4 +173,38 @@ footer {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+
+  /* ========== Filter Bar ========== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-bar label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.filter-bar select {
+  padding: 0.5rem 1rem;
+  background: var(--surface-dark);
+  color: var(--text-primary);
+  border: 1px solid var(--text-secondary);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s, background-color 0.3s;
+  cursor: pointer;
+}
+
+.filter-bar select:hover,
+.filter-bar select:focus {
+  border-color: var(--primary-accent);
+  outline: none;
+  background-color: #2a2a2a;
+}
 }
