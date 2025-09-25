@@ -2,36 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Pokemon Cards Viewer</title>
+  <title>Pokémon Cards</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
     table { border-collapse: collapse; width: 100%; margin-top: 20px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
     th { background-color: #f2f2f2; }
-    input[type="file"] { margin-top: 10px; }
   </style>
 </head>
 <body>
 
-  <h1>Pokémon Cards Viewer</h1>
-  <input type="file" id="csvFile" accept=".csv" />
-  <div id="tableContainer"></div>
+  <h1>Pokémon Card Collection</h1>
+  <div id="tableContainer">Loading data...</div>
 
   <script>
-    document.getElementById('csvFile').addEventListener('change', function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim());
+      const rows = lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
+      return { headers, rows };
+    }
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const text = e.target.result;
+    function renderTable(headers, rows) {
+      let html = '<table><thead><tr>';
+      headers.forEach(header => html += `<th>${header}</th>`);
+      html += '</tr></thead><tbody>';
+      rows.forEach(row => {
+        html += '<tr>';
+        row.forEach(cell => html += `<td>${cell}</td>`);
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      return html;
+    }
 
-        const lines = text.trim().split('\n');
-        const headers = lines[0].split(',').map(h => h.trim());
-        const rows = lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
+    fetch('pokemon-cards.csv')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load CSV file.');
+        return response.text();
+      })
+      .then(csvText => {
+        const { headers, rows } = parseCSV(csvText);
+        const tableHTML = renderTable(headers, rows);
+        document.getElementById('tableContainer').innerHTML = tableHTML;
+      })
+      .catch(error => {
+        document.getElementById('tableContainer').innerText = 'Error loading CSV: ' + error.message;
+      });
+  </script>
 
-        let html = '<table><thead><tr>';
-        headers.forEach(header => html += `<th>${header}</th>`);
-        html += '</tr></thead><tbody>';
-
-        rows.forEach(r
+</body>
+</html>
