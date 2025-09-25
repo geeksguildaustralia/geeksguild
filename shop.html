@@ -2,55 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Geek's Guild</title>
-  <link rel="stylesheet" href="geeksguild.css" />
-
-  <!-- PapaParse from CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <title>Pokemon Cards Viewer</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    input[type="file"] { margin-top: 10px; }
+  </style>
 </head>
-
 <body>
-  <h1>My Pokémon Collection</h1>
-  <div class="card-grid" id="card-container">Loading cards...</div>
+
+  <h1>Pokémon Cards Viewer</h1>
+  <input type="file" id="csvFile" accept=".csv" />
+  <div id="tableContainer"></div>
 
   <script>
-    fetch('pokemon-cards.csv')
-      .then(response => response.text())
-      .then(csvText => {
-        Papa.parse(csvText, {
-          header: true,
-          skipEmptyLines: true,
-          complete: function(results) {
-            displayCards(results.data);
-          }
-        });
-      })
-      .catch(error => {
-        document.getElementById('card-container').innerText = 'Error loading CSV: ' + error;
-      });
+    document.getElementById('csvFile').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-    function displayCards(cards) {
-      const container = document.getElementById('card-container');
-      container.innerHTML = ''; // clear loading text
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
 
-      cards.forEach(card => {
-        const cardDiv = document.createElement('div');
-        cardDiv.className = 'card';
+        const lines = text.trim().split('\n');
+        const headers = lines[0].split(',').map(h => h.trim());
+        const rows = lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
 
-        cardDiv.innerHTML = `
-          <h2>${card['Product Name']}</h2>
-          <p><strong>Set:</strong> ${card['Set']}</p>
-          <p><strong>Card Number:</strong> ${card['Card Number']}</p>
-          <p><strong>Rarity:</strong> ${card['Rarity']}</p>
-          <p><strong>Variance:</strong> ${card['Variance']}</p>
-          <p><strong>Grade:</strong> ${card['Grade']}</p>
-          <p><strong>Condition:</strong> ${card['Card Condition']}</p>
-          <p><strong>Quantity:</strong> ${card['Quantity']}</p>
-        `;
+        let html = '<table><thead><tr>';
+        headers.forEach(header => html += `<th>${header}</th>`);
+        html += '</tr></thead><tbody>';
 
-        container.appendChild(cardDiv);
-      });
-    }
-  </script>
-</body>
-</html>
+        rows.forEach(r
