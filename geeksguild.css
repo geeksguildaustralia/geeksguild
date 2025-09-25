@@ -68,7 +68,69 @@ nav a:hover {
   border-bottom-right-radius: 60px;
 }
 
-.hero h2 {
-  font-size: 2.5rem;
+
+  /* ========== Table Styles ========== */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 2rem;
+  background-color: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background-color: var(--lavender);
   font-weight: 600;
-  margin-bottom: 1r
+  color: var(--dark);
+}
+
+td {
+  color: var(--dark);
+}
+
+tr:hover {
+  background-color: var(--peach);
+  transition: background-color 0.3s;
+}
+
+/* ========== Responsive Table ========== */
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 1rem;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    padding: 1rem;
+  }
+
+  td {
+    padding: 0.5rem 1rem;
+    position: relative;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--rose);
+    position: absolute;
+    left: 1rem;
+    top: 0.5rem;
+  }
+}
