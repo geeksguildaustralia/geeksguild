@@ -2,15 +2,12 @@
 
 /* ========== Root Variables ========== */
 :root {
-  --bg-light: #f4f2f7;
-  --bg-gradient-start: #e8d7f6;
-  --bg-gradient-end: #f5e3f8;
-  --lavender: #a17cf9;
-  --peach: #f5b78f;
-  --rose: #b1595e;
-  --dark: #2e2e2e;
-  --white: #ffffff;
-  --shadow-light: rgba(161, 124, 249, 0.25);
+  --bg-light: #f0f2f5;
+  --primary: #2978f0;      /* Electric Blue */
+  --secondary: #f06363;    /* Soft Coral */
+  --text-dark: #2c3e50;
+  --card-bg: #ffffff;
+  --shadow-light: rgba(41, 120, 240, 0.15);
   --shadow-dark: rgba(0, 0, 0, 0.12);
 }
 
@@ -22,8 +19,8 @@
 body {
   margin: 0;
   font-family: 'Poppins', Arial, sans-serif;
-  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
-  color: var(--dark);
+  background: var(--bg-light);
+  color: var(--text-dark);
   line-height: 1.6;
   padding: 30px 20px;
   min-height: 100vh;
@@ -31,12 +28,12 @@ body {
 
 /* ========== Header ========== */
 header {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 1.5rem 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 15px;
+  /* Removed border-radius for sharp edges */
   box-shadow: 0 8px 20px var(--shadow-light);
   position: sticky;
   top: 0;
@@ -47,14 +44,14 @@ header {
 header h1 {
   font-weight: 700;
   font-size: 2rem;
-  color: var(--lavender);
+  color: var(--primary);
   letter-spacing: 1px;
 }
 
 nav a {
   margin-left: 2rem;
   font-weight: 600;
-  color: var(--rose);
+  color: var(--secondary);
   text-transform: uppercase;
   font-size: 0.9rem;
   padding: 0.5rem 0.7rem;
@@ -63,8 +60,8 @@ nav a {
 }
 
 nav a:hover {
-  background: var(--lavender);
-  color: var(--white);
+  background: var(--primary);
+  color: var(--card-bg);
   box-shadow: 0 4px 12px var(--shadow-light);
 }
 
@@ -74,7 +71,7 @@ nav a:hover {
   padding: 5rem 2rem 6rem;
   max-width: 700px;
   margin: 0 auto 3rem;
-  background: var(--white);
+  background: var(--card-bg);
   border-radius: 25px;
   box-shadow: 0 15px 30px var(--shadow-light);
 }
@@ -83,21 +80,21 @@ nav a:hover {
   font-size: 2.75rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: var(--lavender);
+  color: var(--primary);
   letter-spacing: 1px;
 }
 
 .hero p {
   font-size: 1.1rem;
   margin-bottom: 2rem;
-  color: var(--rose);
+  color: var(--secondary);
 }
 
 .btn {
   display: inline-block;
   padding: 1rem 2.5rem;
-  background: linear-gradient(45deg, var(--peach), var(--rose));
-  color: var(--white);
+  background: var(--primary);
+  color: var(--card-bg);
   font-weight: 700;
   text-transform: uppercase;
   border-radius: 50px;
@@ -110,6 +107,7 @@ nav a:hover {
 }
 
 .btn:hover {
+  background: var(--secondary);
   transform: translateY(-5px);
   box-shadow: 0 12px 24px var(--shadow-dark);
 }
@@ -124,7 +122,7 @@ nav a:hover {
 }
 
 .card {
-  background: var(--white);
+  background: var(--card-bg);
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0 15px 30px var(--shadow-light);
@@ -142,13 +140,13 @@ nav a:hover {
   margin: 0 0 1rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--rose);
+  color: var(--secondary);
   letter-spacing: 0.5px;
 }
 
 .card p {
   margin: 0.4rem 0;
-  color: var(--dark);
+  color: var(--text-dark);
   font-weight: 500;
   font-size: 1rem;
 }
@@ -157,10 +155,10 @@ nav a:hover {
 footer {
   text-align: center;
   padding: 2rem 1rem;
-  color: var(--rose);
+  color: var(--secondary);
   font-weight: 600;
   font-size: 0.9rem;
-  border-top: 1px solid var(--peach);
+  border-top: 1px solid var(--primary);
   max-width: 1200px;
   margin: 0 auto;
 }
