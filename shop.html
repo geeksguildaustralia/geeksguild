@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Geek's Guild</title>
+  <title>Geek's Guild – Shop</title>
   <link rel="stylesheet" href="geeksguild.css" />
 </head>
 <body>
@@ -16,30 +16,33 @@
 
   <main class="hero">
     <h2>Catch 'Em All… Before They're Gone!</h2>
-    <p></p>
-    <a href="shop.html" class="btn">Browse Cards</a>
+    <p>Explore our collection of graded Pokémon cards by set or style.</p>
+    <a href="sets/promos.html" class="btn">View Promo Cards</a>
   </main>
 
-  <h1>Pokémon Card Collection</h1>
+  <section class="shop-section">
+    <h1>Pokémon Card Collection</h1>
 
-  <!-- 🔽 Filter Dropdowns -->
-  <div class="filter-bar">
-    <label for="setFilter">Filter by Set:</label>
-    <select id="setFilter">
-      <option value="all">All Sets</option>
-    </select>
+    <!-- 🔽 Filters -->
+    <div class="filter-bar">
+      <label for="setFilter">Filter by Set:</label>
+      <select id="setFilter">
+        <option value="all">All Sets</option>
+      </select>
 
-    <label for="variantFilter">Variant:</label>
-    <select id="variantFilter">
-      <option value="all">All</option>
-      <option value="Holo">Holo & Reverse Holo</option>
-      <option value="Non-Holo">Non-Holo</option>
-    </select>
-  </div>
+      <label for="variantFilter">Variant:</label>
+      <select id="variantFilter">
+        <option value="all">All</option>
+        <option value="Holo">Holo & Reverse Holo</option>
+        <option value="Non-Holo">Non-Holo</option>
+      </select>
+    </div>
 
-  <!-- 🧩 Cards get rendered here -->
-  <div id="tableContainer">Loading data...</div>
+    <!-- 🧩 Cards get rendered here -->
+    <div id="tableContainer">Loading data...</div>
+  </section>
 
+  <!-- 📜 JavaScript logic -->
   <script>
     let allCards = [];
     let headers = [];
@@ -52,6 +55,11 @@
     }
 
     function renderCards(rows) {
+      if (rows.length === 0) {
+        document.getElementById('tableContainer').innerHTML = "<p>No cards found.</p>";
+        return;
+      }
+
       let html = '<div class="card-grid">';
       rows.forEach(row => {
         html += `
@@ -74,7 +82,9 @@
     function populateSetDropdown() {
       const setFilter = document.getElementById('setFilter');
       const sets = new Set(allCards.map(row => row[1]));
-      sets.forEach(setName => {
+      const sortedSets = Array.from(sets).sort();
+
+      sortedSets.forEach(setName => {
         const opt = document.createElement('option');
         opt.value = setName;
         opt.textContent = setName;
@@ -84,7 +94,7 @@
 
     function applyFilters() {
       const selectedSet = document.getElementById('setFilter').value;
-      const selectedVariant = document.getElementById('variantFilter').value;
+      const selectedVariant = document.getElementById('variantFilter').value.toLowerCase();
 
       const filtered = allCards.filter(row => {
         const cardSet = row[1];
@@ -92,11 +102,11 @@
 
         if (selectedSet !== 'all' && cardSet !== selectedSet) return false;
 
-        if (selectedVariant === 'Holo') {
+        if (selectedVariant === 'holo') {
           return variance.includes('holo');
         }
 
-        if (selectedVariant === 'Non-Holo') {
+        if (selectedVariant === 'non-holo') {
           return !variance.includes('holo');
         }
 
@@ -106,7 +116,7 @@
       renderCards(filtered);
     }
 
-    // Fetch and initialize
+    // Initialize
     fetch('pokemon-cards.csv')
       .then(response => {
         if (!response.ok) throw new Error('Failed to load CSV file.');
