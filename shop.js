@@ -1,14 +1,61 @@
 let allCards = [];
 let headers = [];
 
-// Parse CSV into rows
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  headers = lines[0].split(',').map(h => h.trim());
-  return lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
+// Get the base path dynamically (e.g. "/geeksguild")
+const basePath = `/${window.location.pathname.split('/')[1]}`;
+
+// 🔣 Normalize set name to image filename
+function normalizeSetNameToFilename(setName) {
+  return setName
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '_')   // Replace non-alphanumeric characters with underscores
+    .replace(/_+/g, '_')          // Collapse multiple underscores
+    .replace(/^_+|_+$/g, '')      // Trim leading/trailing underscores
+    + '.png';
 }
 
-// Render cards for a selected set
+// 🖼 Render buttons for each unique set
+function renderSetButtons() {
+  const container = document.getElementById('setButtons');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  const sets = new Set(allCards.map(row => row[1]));
+  const sortedSets = Array.from(sets).sort();
+
+  sortedSets.forEach(setName => {
+    const btn = document.createElement('button');
+    btn.className = 'set-button';
+
+    const img = document.createElement('img');
+    img.className = 'set-img';
+    img.alt = `${setName} icon`;
+
+    const filename = normalizeSetNameToFilename(setName);
+    img.src = `${basePath}/images/${filename}`;
+    img.onerror = () => {
+      console.warn(`Image not found: ${filename} → using default`);
+      img.src = `${basePath}/images/default.png`;
+    };
+
+    const span = document.createElement('span');
+    span.textContent = setName;
+
+    btn.appendChild(img);
+    btn.appendChild(span);
+
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.set-button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCardsForSet(setName);
+    });
+
+    container.appendChild(btn);
+  });
+}
+
+// 🃏 Render cards for selected set
 function renderCardsForSet(setName) {
   const filtered = allCards.filter(row => row[1] === setName);
   let html = '<div class="card-grid">';
@@ -30,42 +77,14 @@ function renderCardsForSet(setName) {
   document.getElementById('tableContainer').innerHTML = html;
 }
 
-// Create buttons for each unique set (with images)
-function renderSetButtons() {
-  const container = document.getElementById('setButtons');
-  if (!container) return;
-
-  const sets = new Set(allCards.map(row => row[1]));
-  const sortedSets = Array.from(sets).sort();
-
-  sortedSets.forEach(setName => {
-    const btn = document.createElement('button');
-    btn.className = 'set-button';
-
-    const img = document.createElement('img');
-    img.src = `images/sets/${setName}.png`; // ✅ Make sure the filename matches
-    img.alt = `${setName} icon`;
-    img.className = 'set-icon';
-
-    const label = document.createElement('span');
-    label.textContent = setName;
-
-    btn.appendChild(img);
-    btn.appendChild(label);
-
-    btn.addEventListener('click', () => {
-      renderCardsForSet(setName);
-
-      // Highlight the selected button
-      document.querySelectorAll('.set-button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-
-    container.appendChild(btn);
-  });
+// 📋 Parse CSV text into rows
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  headers = lines[0].split(',').map(h => h.trim());
+  return lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
 }
 
-// Load CSV and initialize
+// 📦 Load CSV data and initialize the UI
 fetch('pokemon-cards.csv')
   .then(response => {
     if (!response.ok) throw new Error('Failed to load CSV file.');
@@ -77,5 +96,6 @@ fetch('pokemon-cards.csv')
     document.getElementById('tableContainer').innerHTML = '<p>Select a set above to view cards.</p>';
   })
   .catch(error => {
-    document.getElementById('tableContainer').innerHTML = `<p>Error loading CSV: ${error.message}</p>`;
+    console.error("CSV load error:", error);
+    document.getElementById('tableContainer').innerHTML = `<p>Error loading data: ${error.message}</p>`;
   });
