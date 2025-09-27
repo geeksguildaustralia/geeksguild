@@ -8,11 +8,10 @@ function parseCSV(text) {
   return lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
 }
 
-// Render cards for one set
+// Render cards for a selected set
 function renderCardsForSet(setName) {
   const filtered = allCards.filter(row => row[1] === setName);
   let html = '<div class="card-grid">';
-
   filtered.forEach(row => {
     html += `
       <div class="card">
@@ -27,14 +26,15 @@ function renderCardsForSet(setName) {
       </div>
     `;
   });
-
   html += '</div>';
   document.getElementById('tableContainer').innerHTML = html;
 }
 
-// Render buttons for each set
+// Create buttons for each unique set
 function renderSetButtons() {
   const container = document.getElementById('setButtons');
+  if (!container) return;
+
   const sets = new Set(allCards.map(row => row[1]));
   const sortedSets = Array.from(sets).sort();
 
@@ -51,15 +51,15 @@ function renderSetButtons() {
 
 // Load CSV and initialize
 fetch('pokemon-cards.csv')
-  .then(res => {
-    if (!res.ok) throw new Error('CSV load failed');
-    return res.text();
+  .then(response => {
+    if (!response.ok) throw new Error('Failed to load CSV file.');
+    return response.text();
   })
-  .then(csv => {
-    allCards = parseCSV(csv);
+  .then(csvText => {
+    allCards = parseCSV(csvText);
     renderSetButtons();
     document.getElementById('tableContainer').innerHTML = '<p>Select a set above to view cards.</p>';
   })
-  .catch(err => {
-    document.getElementById('tableContainer').innerHTML = `<p>Error loading data: ${err.message}</p>`;
+  .catch(error => {
+    document.getElementById('tableContainer').innerHTML = `<p>Error loading CSV: ${error.message}</p>`;
   });
