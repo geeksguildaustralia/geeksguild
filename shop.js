@@ -1,25 +1,19 @@
 let allCards = [];
 let headers = [];
 
-// Parse the CSV text
+// Parse CSV into rows
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   headers = lines[0].split(',').map(h => h.trim());
-  const rows = lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
-  return rows;
+  return lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
 }
 
-// Render cards as HTML elements
-function renderCards(rows) {
-  const container = document.getElementById('tableContainer');
-
-  if (!rows.length) {
-    container.innerHTML = "<p>No cards found.</p>";
-    return;
-  }
-
+// Render cards for one set
+function renderCardsForSet(setName) {
+  const filtered = allCards.filter(row => row[1] === setName);
   let html = '<div class="card-grid">';
-  rows.forEach(row => {
+
+  filtered.forEach(row => {
     html += `
       <div class="card">
         <h3>${row[0]}</h3>
@@ -33,78 +27,39 @@ function renderCards(rows) {
       </div>
     `;
   });
+
   html += '</div>';
-  container.innerHTML = html;
+  document.getElementById('tableContainer').innerHTML = html;
 }
 
-// Populate dropdown with set names
-function populateSetDropdown() {
-  const setFilter = document.getElementById('setFilter');
+// Render buttons for each set
+function renderSetButtons() {
+  const container = document.getElementById('setButtons');
   const sets = new Set(allCards.map(row => row[1]));
   const sortedSets = Array.from(sets).sort();
 
   sortedSets.forEach(setName => {
-    const opt = document.createElement('option');
-    opt.value = setName;
-    opt.textContent = setName;
-    setFilter.appendChild(opt);
+    const btn = document.createElement('button');
+    btn.textContent = setName;
+    btn.className = 'set-button';
+    btn.addEventListener('click', () => {
+      renderCardsForSet(setName);
+    });
+    container.appendChild(btn);
   });
-
-  // If the page has a data-set attribute (e.g. newest set), auto-select it
-  const initialSet = document.body.dataset.set;
-  if (initialSet) {
-    setFilter.value = initialSet;
-  }
-}
-
-// Apply current filter selections
-function applyFilters() {
-  const selectedSet = document.getElementById('setFilter')?.value;
-  const selectedVariant = document.getElementById('variantFilter')?.value.toLowerCase();
-
-  const filtered = allCards.filter(row => {
-    const cardSet = row[1];
-    const variance = row[4].toLowerCase();
-
-    if (selectedSet && selectedSet !== 'all' && cardSet !== selectedSet) return false;
-
-    if (selectedVariant === 'holo') {
-      return variance.includes('holo');
-    }
-
-    if (selectedVariant === 'non-holo') {
-      return !variance.includes('holo');
-    }
-
-    return true;
-  });
-
-  renderCards(filtered);
 }
 
 // Load CSV and initialize
 fetch('pokemon-cards.csv')
-  .then(response => {
-    if (!response.ok) throw new Error('Failed to load CSV file.');
-    return response.text();
+  .then(res => {
+    if (!res.ok) throw new Error('CSV load failed');
+    return res.text();
   })
-  .then(csvText => {
-    allCards = parseCSV(csvText);
-    populateSetDropdown();
-    renderCards(allCards);
-
-    // Attach event listeners to filters
-    const setDropdown = document.getElementById('setFilter');
-    const variantDropdown = document.getElementById('variantFilter');
-
-    if (setDropdown) setDropdown.addEventListener('change', applyFilters);
-    if (variantDropdown) variantDropdown.addEventListener('change', applyFilters);
-
-    // Auto-apply filter on load if body has data-set attribute
-    if (document.body.dataset.set) {
-      applyFilters();
-    }
+  .then(csv => {
+    allCards = parseCSV(csv);
+    renderSetButtons();
+    document.getElementById('tableContainer').innerHTML = '<p>Select a set above to view cards.</p>';
   })
-  .catch(error => {
-    document.getElementById('tableContainer').innerText = 'Error loading CSV: ' + error.message;
+  .catch(err => {
+    document.getElementById('tableContainer').innerHTML = `<p>Error loading data: ${err.message}</p>`;
   });

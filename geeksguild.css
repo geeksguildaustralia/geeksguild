@@ -208,3 +208,28 @@ footer {
   background-color: #2a2a2a;
 }
 }
+
+.set-button-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  justify-content: center;
+}
+
+.set-button {
+  background-color: var(--lavender);
+  border: none;
+  color: var(--dark);
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.set-button:hover {
+  background-color: var(--rose);
+  color: var(--white);
+}

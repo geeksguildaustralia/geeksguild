@@ -4,137 +4,28 @@
   <meta charset="UTF-8" />
   <title>Geek's Guild – Shop</title>
   <link rel="stylesheet" href="geeksguild.css" />
-  <script src="shop.js"></script>
-
 </head>
 <body>
   <header>
     <h1>Geek's Guild</h1>
     <nav>
       <a href="index.html">Home</a>
-      <a href="shop.html">Shop</a>
+      <a href="shop.html" class="active">Shop</a>
     </nav>
   </header>
 
   <main class="hero">
-    <h2>Catch 'Em All… Before They're Gone!</h2>
-    <p>Explore our collection of graded Pokémon cards by set or style.</p>
-    <a href="sets/promos.html" class="btn">View Promo Cards</a>
+    <h2>Browse Pokémon Card Sets</h2>
+    <p>Select a set to view available cards.</p>
   </main>
 
-  <section class="shop-section">
-    <h1>Pokémon Card Collection</h1>
+  <!-- 🔘 Set Buttons -->
+  <div id="setButtons" class="set-button-bar"></div>
 
-    <!-- 🔽 Filters -->
-    <div class="filter-bar">
-      <label for="setFilter">Filter by Set:</label>
-      <select id="setFilter">
-        <option value="all">All Sets</option>
-      </select>
+  <!-- 🧩 Cards Render Here -->
+  <div id="tableContainer">Loading data...</div>
 
-      <label for="variantFilter">Variant:</label>
-      <select id="variantFilter">
-        <option value="all">All</option>
-        <option value="Holo">Holo & Reverse Holo</option>
-        <option value="Non-Holo">Non-Holo</option>
-      </select>
-    </div>
-
-    <!-- 🧩 Cards get rendered here -->
-    <div id="tableContainer">Loading data...</div>
-  </section>
-
-  <!-- 📜 JavaScript logic -->
-  <script>
-    let allCards = [];
-    let headers = [];
-
-    function parseCSV(text) {
-      const lines = text.trim().split('\n');
-      headers = lines[0].split(',').map(h => h.trim());
-      const rows = lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
-      return rows;
-    }
-
-    function renderCards(rows) {
-      if (rows.length === 0) {
-        document.getElementById('tableContainer').innerHTML = "<p>No cards found.</p>";
-        return;
-      }
-
-      let html = '<div class="card-grid">';
-      rows.forEach(row => {
-        html += `
-          <div class="card">
-            <h3>${row[0]}</h3>
-            <p><strong>Set:</strong> ${row[1]}</p>
-            <p><strong>Card #:</strong> ${row[2]}</p>
-            <p><strong>Rarity:</strong> ${row[3]}</p>
-            <p><strong>Variance:</strong> ${row[4]}</p>
-            <p><strong>Grade:</strong> ${row[5]}</p>
-            <p><strong>Condition:</strong> ${row[6]}</p>
-            <p><strong>Quantity:</strong> ${row[7]}</p>
-          </div>
-        `;
-      });
-      html += '</div>';
-      document.getElementById('tableContainer').innerHTML = html;
-    }
-
-    function populateSetDropdown() {
-      const setFilter = document.getElementById('setFilter');
-      const sets = new Set(allCards.map(row => row[1]));
-      const sortedSets = Array.from(sets).sort();
-
-      sortedSets.forEach(setName => {
-        const opt = document.createElement('option');
-        opt.value = setName;
-        opt.textContent = setName;
-        setFilter.appendChild(opt);
-      });
-    }
-
-    function applyFilters() {
-      const selectedSet = document.getElementById('setFilter').value;
-      const selectedVariant = document.getElementById('variantFilter').value.toLowerCase();
-
-      const filtered = allCards.filter(row => {
-        const cardSet = row[1];
-        const variance = row[4].toLowerCase();
-
-        if (selectedSet !== 'all' && cardSet !== selectedSet) return false;
-
-        if (selectedVariant === 'holo') {
-          return variance.includes('holo');
-        }
-
-        if (selectedVariant === 'non-holo') {
-          return !variance.includes('holo');
-        }
-
-        return true;
-      });
-
-      renderCards(filtered);
-    }
-
-    // Initialize
-    fetch('pokemon-cards.csv')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load CSV file.');
-        return response.text();
-      })
-      .then(csvText => {
-        allCards = parseCSV(csvText);
-        populateSetDropdown();
-        renderCards(allCards);
-
-        document.getElementById('setFilter').addEventListener('change', applyFilters);
-        document.getElementById('variantFilter').addEventListener('change', applyFilters);
-      })
-      .catch(error => {
-        document.getElementById('tableContainer').innerText = 'Error loading CSV: ' + error.message;
-      });
-  </script>
+  <!-- 👇 Link to External JavaScript -->
+  <script src="shop.js"></script>
 </body>
 </html>
