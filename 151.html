@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pokémon Set: 151</title>
+  <link rel="stylesheet" href="../geeksguild.css" />
+</head>
+
+<!-- This attribute filters by set name -->
+<body data-set="151">
+
+  <header>
+    <h1>Geek's Guild</h1>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../shop.html">Shop</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <h2>Pokémon TCG – Set 151</h2>
+    <p>Explore the full 151 card collection below</p>
+  </main>
+
+  <!-- Sort dropdown -->
+  <div class="filter-bar">
+    <label for="sortBy">Sort by:</label>
+    <select id="sortBy">
+      <option value="number">Card Number</option>
+      <option value="name">Name</option>
+      <option value="rarity">Rarity</option>
+    </select>
+  </div>
+
+  <!-- Card grid will be rendered here -->
+  <div id="cardContainer">Loading cards...</div>
+
+  <!-- Load shared card logic -->
+  <script src="../shop.js"></script>
+</body>
+</html>
