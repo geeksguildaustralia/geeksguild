@@ -30,7 +30,7 @@ function renderCardsForSet(setName) {
   document.getElementById('tableContainer').innerHTML = html;
 }
 
-// Create buttons for each unique set
+// Create buttons for each unique set (with images)
 function renderSetButtons() {
   const container = document.getElementById('setButtons');
   if (!container) return;
@@ -40,11 +40,27 @@ function renderSetButtons() {
 
   sortedSets.forEach(setName => {
     const btn = document.createElement('button');
-    btn.textContent = setName;
     btn.className = 'set-button';
+
+    const img = document.createElement('img');
+    img.src = `images/sets/${setName}.png`; // ✅ Make sure the filename matches
+    img.alt = `${setName} icon`;
+    img.className = 'set-icon';
+
+    const label = document.createElement('span');
+    label.textContent = setName;
+
+    btn.appendChild(img);
+    btn.appendChild(label);
+
     btn.addEventListener('click', () => {
       renderCardsForSet(setName);
+
+      // Highlight the selected button
+      document.querySelectorAll('.set-button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
     });
+
     container.appendChild(btn);
   });
 }

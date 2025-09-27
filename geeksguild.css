@@ -33,7 +33,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 6px; /* subtle rounding */
+  border-radius: 6px;
   box-shadow: 0 8px 20px var(--shadow-dark);
   position: sticky;
   top: 0;
@@ -151,6 +151,44 @@ nav a:hover {
   font-size: 1rem;
 }
 
+/* ========== Set Button Bar ========== */
+.set-button-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  justify-content: center;
+}
+
+.set-button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--surface-dark);
+  border: 1px solid var(--primary-accent);
+  color: var(--text-primary);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 6px 12px var(--shadow-dark);
+}
+
+.set-button:hover {
+  background-color: var(--primary-accent);
+  color: var(--bg-dark);
+  transform: translateY(-3px);
+}
+
+.set-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
 /* ========== Footer ========== */
 footer {
   text-align: center;
@@ -163,18 +201,7 @@ footer {
   margin: 0 auto;
 }
 
-/* ========== Responsive ========== */
-@media (max-width: 768px) {
-  .hero {
-    padding: 3rem 1.5rem 4rem;
-  }
-
-  .card-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  /* ========== Filter Bar ========== */
+/* ========== Filter Bar ========== */
 .filter-bar {
   display: flex;
   align-items: center;
@@ -207,29 +234,15 @@ footer {
   outline: none;
   background-color: #2a2a2a;
 }
-}
 
-.set-button-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 1.5rem 0;
-  justify-content: center;
-}
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .hero {
+    padding: 3rem 1.5rem 4rem;
+  }
 
-.set-button {
-  background-color: var(--lavender);
-  border: none;
-  color: var(--dark);
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.set-button:hover {
-  background-color: var(--rose);
-  color: var(--white);
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
