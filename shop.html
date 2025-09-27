@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Geek's Guild – Shop</title>
   <link rel="stylesheet" href="geeksguild.css" />
 </head>
 <body>
+
+  <!-- 🧠 Site Header -->
   <header>
     <h1>Geek's Guild</h1>
     <nav>
@@ -14,22 +17,28 @@
     </nav>
   </header>
 
+  <!-- 🚀 Hero Section -->
   <main class="hero">
     <h2>Browse Pokémon Card Sets</h2>
     <p>Select a set to view available cards.</p>
   </main>
 
-  <!-- 🔘 Buttons for each set will be inserted here -->
+  <!-- 🔘 Set Selector Buttons -->
   <section class="section">
-    <div id="setButtons" class="set-button-bar"></div>
+    <div id="setButtons" class="set-button-bar">
+      <!-- Buttons with set images will be inserted here by JavaScript -->
+    </div>
   </section>
 
-  <!-- 🧩 Cards will be rendered here -->
+  <!-- 🧩 Card Results -->
   <section class="section">
-    <div id="tableContainer" class="card-results">Loading data...</div>
+    <div id="tableContainer" class="card-results">
+      Loading data...
+    </div>
   </section>
 
-  <!-- 📜 External JavaScript -->
-  <script src="shop.js"></script>
+  <!-- 📜 JavaScript -->
+  <script src="shop.js" defer></script>
+
 </body>
 </html>
