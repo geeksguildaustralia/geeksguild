@@ -95,7 +95,55 @@ nav a.active {
   color: var(--secondary-accent);
 }
 
-/* ========== Series Navigation ========== */
+/* ========== Series Grid (Shop Page Buttons) ========== */
+.series-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 2rem auto 4rem;
+  max-width: 1200px;
+}
+
+.series-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--surface-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-primary);
+  width: 120px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 15px var(--shadow-dark);
+  text-align: center;
+}
+
+.series-card:hover {
+  transform: translateY(-6px);
+  background-color: var(--primary-accent);
+  color: var(--bg-dark);
+}
+
+.series-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.series-card span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: inherit;
+}
+
+/* ========== Series Navigation Bar (Set Pages) ========== */
 .series-nav {
   display: flex;
   flex-wrap: wrap;
@@ -125,8 +173,8 @@ nav a.active {
 }
 
 .series-nav a img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   margin-right: 0.4rem;
   border-radius: 4px;
@@ -245,7 +293,6 @@ footer {
   }
 
   .set-button-bar {
-    justify-content: center;
     gap: 0.75rem;
   }
 
@@ -259,7 +306,21 @@ footer {
     height: 50px;
     margin-bottom: 0.4rem;
     border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .series-card {
+    width: 100px;
+    padding: 0.8rem;
+  }
+
+  .series-card img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.4rem;
+  }
+
+  .series-card span {
+    font-size: 0.75rem;
   }
 
   .series-nav {
@@ -274,33 +335,8 @@ footer {
   }
 
   .series-nav a img {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     margin-right: 0.3rem;
   }
-
-  /* ==== Force smaller series nav images & buttons ==== */
-
-.series-nav a {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.4rem !important;
-  padding: 0.3rem 0.6rem !important;
-  font-size: 0.75rem !important;
-  max-height: 2.2rem !important; /* to force limits */
-  background-color: var(--surface-dark) !important;
-}
-
-.series-nav a img {
-  width: 20px !important;
-  height: 20px !important;
-  object-fit: contain !important;
-  margin-right: 0.3rem !important;
-}
-
-.series-nav {
-  gap: 0.6rem !important;
-  padding: 0.5rem 0 1rem !important;
-}
-
 }
