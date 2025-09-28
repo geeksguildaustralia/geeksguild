@@ -237,12 +237,21 @@ footer {
   color: var(--text-secondary);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.85rem;
-  padding: 0.6rem 1rem;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.75rem;
   border-radius: 4px;
   transition: background-color 0.3s ease, color 0.3s ease;
   text-decoration: none;
+  background: var(--bg-dark); /* optional: gives them a subtle background */
+  box-shadow: 0 2px 5px var(--shadow-dark);
 }
+
+.series-nav a:hover,
+.series-nav a.active {
+  background: var(--primary-accent);
+  color: var(--bg-dark);
+}
+
 
 .series-nav a:hover,
 .series-nav a.active {
