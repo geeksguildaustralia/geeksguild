@@ -95,7 +95,52 @@ nav a.active {
   color: var(--secondary-accent);
 }
 
-/* ========== Buttons for Sets ========== */
+/* ========== Series Navigation ========== */
+.series-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 0 2rem;
+  background: var(--surface-dark);
+  border-radius: 6px;
+  box-shadow: 0 6px 12px var(--shadow-dark);
+  margin: 0 auto 2rem;
+  max-width: 1200px;
+}
+
+.series-nav a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  text-decoration: none;
+  background: var(--bg-dark);
+  box-shadow: 0 2px 5px var(--shadow-dark);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.series-nav a img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-right: 0.4rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.series-nav a:hover,
+.series-nav a.active {
+  background: var(--primary-accent);
+  color: var(--bg-dark);
+  box-shadow: 0 4px 10px var(--shadow-dark);
+}
+
+/* ========== Set Buttons ========== */
 .set-button-bar {
   display: flex;
   flex-wrap: wrap;
@@ -128,14 +173,13 @@ nav a.active {
   color: var(--bg-dark);
 }
 
-/* Icon image size and spacing */
 .set-button img.set-img {
   width: 80px;
   height: 80px;
   object-fit: contain;
   margin-bottom: 0.5rem;
-  border-radius: 8px; /* Optional: slightly rounded corners */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 /* ========== Pokémon Card Grid ========== */
@@ -210,54 +254,28 @@ footer {
     padding: 0.8rem;
   }
 
- .set-button img.set-img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  margin-bottom: 0.4rem;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-}
+  .set-button img.set-img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.4rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
 
-  /* ========== Secondary Navigation for Series ========== */
-.series-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  padding: 1rem 0 2rem;
-  background: var(--surface-dark);
-  border-radius: 6px;
-  box-shadow: 0 6px 12px var(--shadow-dark);
-  margin: 0 auto 2rem;
-  max-width: 1200px;
-}
+  .series-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-.series-nav a {
-  color: var(--text-secondary);
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  padding: 0.4rem 0.75rem;
-  border-radius: 4px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  text-decoration: none;
-  background: var(--bg-dark); /* optional: gives them a subtle background */
-  box-shadow: 0 2px 5px var(--shadow-dark);
-}
-.series-nav img {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  margin-right: 0.4rem;
-  vertical-align: middle;
-}
+  .series-nav a {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
 
-.series-nav a:hover,
-.series-nav a.active {
-  background: var(--primary-accent);
-  color: var(--bg-dark);
-  box-shadow: 0 4px 10px var(--shadow-dark);
-}
-
+  .series-nav a img {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.3rem;
+  }
 }
