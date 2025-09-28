@@ -2,13 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Geek's Guild – Shop</title>
   <link rel="stylesheet" href="geeksguild.css" />
 </head>
 <body>
-
-  <!-- 🧠 Site Header -->
   <header>
     <h1>Geek's Guild</h1>
     <nav>
@@ -17,28 +14,52 @@
     </nav>
   </header>
 
-  <!-- 🚀 Hero Section -->
   <main class="hero">
-    <h2>Browse Pokémon Card Sets</h2>
-    <p>Select a set to view available cards.</p>
+    <h2>Browse by Series</h2>
+    <p>Select a Pokémon series to view available sets and cards.</p>
   </main>
 
-  <!-- 🔘 Set Selector Buttons -->
-  <section class="section">
-    <div id="setButtons" class="set-button-bar">
-      <!-- Buttons with set images will be inserted here by JavaScript -->
-    </div>
+  <section class="series-grid">
+    <a href="shop_wotc.html" class="series-card">
+      <img src="images/wizards_of_the_coast.png" alt="Wizards of the Coast" />
+      <span>Wizards of the Coast</span>
+    </a>
+    <a href="shop_diamondpearl.html" class="series-card">
+      <img src="images/diamond_and_pearl.png" alt="Diamond and Pearl" />
+      <span>Diamond and Pearl</span>
+    </a>
+    <a href="shop_blackwhite.html" class="series-card">
+      <img src="images/black_and_white.png" alt="Black and White" />
+      <span>Black and White</span>
+    </a>
+    <a href="shop_xy.html" class="series-card">
+      <img src="images/xy.png" alt="XY" />
+      <span>XY</span>
+    </a>
+    <a href="shop_mega.html" class="series-card">
+      <img src="images/mega_evolution.png" alt="Mega Evolution" />
+      <span>Mega Evolution</span>
+    </a>
+    <a href="shop_sunmoon.html" class="series-card">
+      <img src="images/sun_and_moon.png" alt="Sun and Moon" />
+      <span>Sun and Moon</span>
+    </a>
+    <a href="shop_swordshield.html" class="series-card">
+      <img src="images/sword_and_shield.png" alt="Sword and Shield" />
+      <span>Sword and Shield</span>
+    </a>
+    <a href="shop_scarletviolet.html" class="series-card">
+      <img src="images/scarlet_and_violet.png" alt="Scarlet and Violet" />
+      <span>Scarlet and Violet</span>
+    </a>
+    <a href="shop_platinum.html" class="series-card">
+      <img src="images/platinum.png" alt="Platinum" />
+      <span>Platinum</span>
+    </a>
+    <a href="shop_misc.html" class="series-card">
+      <img src="images/miscellaneous.png" alt="Miscellaneous" />
+      <span>Miscellaneous</span>
+    </a>
   </section>
-
-  <!-- 🧩 Card Results -->
-  <section class="section">
-    <div id="tableContainer" class="card-results">
-      Loading data...
-    </div>
-  </section>
-
-  <!-- 📜 JavaScript -->
-  <script src="shop.js" defer></script>
-
 </body>
 </html>
