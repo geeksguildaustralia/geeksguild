@@ -245,13 +245,13 @@ footer {
   background: var(--bg-dark); /* optional: gives them a subtle background */
   box-shadow: 0 2px 5px var(--shadow-dark);
 }
-
-.series-nav a:hover,
-.series-nav a.active {
-  background: var(--primary-accent);
-  color: var(--bg-dark);
+.series-nav img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-right: 0.4rem;
+  vertical-align: middle;
 }
-
 
 .series-nav a:hover,
 .series-nav a.active {
