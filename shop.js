@@ -1,16 +1,17 @@
 let allCards = [];
 let headers = [];
 
-// Get the base path dynamically (e.g. "/geeksguild")
+// 📁 Get the base path dynamically (e.g. "/geeksguild")
 const basePath = `/${window.location.pathname.split('/')[1]}`;
 
-// 🔣 Normalize set name to image filename
+// 🔣 Normalize set name to match image filename
 function normalizeSetNameToFilename(setName) {
   return setName
     .toLowerCase()
-    .replace(/[^a-z0-9]/g, '_')   // Replace non-alphanumeric characters with underscores
-    .replace(/_+/g, '_')          // Collapse multiple underscores
-    .replace(/^_+|_+$/g, '')      // Trim leading/trailing underscores
+    .replace(/&/g, 'and')             // Replace '&' with 'and'
+    .replace(/[^a-z0-9]/g, '_')       // Replace non-alphanumeric characters with underscores
+    .replace(/_+/g, '_')              // Collapse multiple underscores
+    .replace(/^_+|_+$/g, '')          // Trim leading/trailing underscores
     + '.png';
 }
 
@@ -35,7 +36,7 @@ function renderSetButtons() {
     const filename = normalizeSetNameToFilename(setName);
     img.src = `${basePath}/images/${filename}`;
     img.onerror = () => {
-      console.warn(`Image not found: ${filename} → using default`);
+      console.warn(`Image not found: ${filename} → using default.png`);
       img.src = `${basePath}/images/default.png`;
     };
 
@@ -55,7 +56,7 @@ function renderSetButtons() {
   });
 }
 
-// 🃏 Render cards for selected set
+// 🃏 Render cards for the selected set
 function renderCardsForSet(setName) {
   const filtered = allCards.filter(row => row[1] === setName);
   let html = '<div class="card-grid">';
@@ -77,14 +78,14 @@ function renderCardsForSet(setName) {
   document.getElementById('tableContainer').innerHTML = html;
 }
 
-// 📋 Parse CSV text into rows
+// 📋 Parse CSV text into data rows
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   headers = lines[0].split(',').map(h => h.trim());
   return lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
 }
 
-// 📦 Load CSV data and initialize the UI
+// 📦 Load the CSV file and initialize the UI
 fetch('pokemon-cards.csv')
   .then(response => {
     if (!response.ok) throw new Error('Failed to load CSV file.');
