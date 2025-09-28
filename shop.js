@@ -1,50 +1,53 @@
 let allCards = [];
 let headers = [];
 
-// 📁 Get the base path dynamically (e.g. "/geeksguild")
+// 🔍 Detect current series from <body data-series="XY">
+const currentSeries = document.body.dataset.series || null;
+
+// 🔗 Get base path for images
 const basePath = `/${window.location.pathname.split('/')[1]}`;
 
-// 🔣 Normalize set name to match image filename
+// 🧹 Normalize set name to a consistent filename
 function normalizeSetNameToFilename(setName) {
   return setName
     .toLowerCase()
-    .replace(/&/g, 'and')             // Replace '&' with 'and'
-    .replace(/[^a-z0-9]/g, '_')       // Replace non-alphanumeric characters with underscores
-    .replace(/_+/g, '_')              // Collapse multiple underscores
-    .replace(/^_+|_+$/g, '')          // Trim leading/trailing underscores
-    + '.png';
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '') + '.png';
 }
 
-// 🖼 Render buttons for each unique set
+// 🖼 Render buttons for each set in the current series
 function renderSetButtons() {
   const container = document.getElementById('setButtons');
   if (!container) return;
 
   container.innerHTML = '';
 
-  const sets = new Set(allCards.map(row => row[1]));
-  const sortedSets = Array.from(sets).sort();
+  // ✅ Filter cards if a series is selected
+  const cardsToUse = currentSeries
+    ? allCards.filter(row => row[8] === currentSeries) // Assuming column 8 = Series
+    : allCards;
 
-  sortedSets.forEach(setName => {
+  const uniqueSets = Array.from(new Set(cardsToUse.map(row => row[1]))).sort();
+
+  uniqueSets.forEach(setName => {
     const btn = document.createElement('button');
     btn.className = 'set-button';
 
     const img = document.createElement('img');
     img.className = 'set-img';
     img.alt = `${setName} icon`;
-
-    const filename = normalizeSetNameToFilename(setName);
-    img.src = `${basePath}/images/${filename}`;
+    img.src = `${basePath}/images/${normalizeSetNameToFilename(setName)}`;
     img.onerror = () => {
-      console.warn(`Image not found: ${filename} → using default.png`);
       img.src = `${basePath}/images/default.png`;
     };
 
-    const span = document.createElement('span');
-    span.textContent = setName;
+    const label = document.createElement('span');
+    label.textContent = setName;
 
     btn.appendChild(img);
-    btn.appendChild(span);
+    btn.appendChild(label);
 
     btn.addEventListener('click', () => {
       document.querySelectorAll('.set-button').forEach(b => b.classList.remove('active'));
@@ -54,38 +57,52 @@ function renderSetButtons() {
 
     container.appendChild(btn);
   });
+
+  // Optionally, auto-select the first set
+  if (uniqueSets.length > 0) {
+    renderCardsForSet(uniqueSets[0]);
+    container.firstChild.classList.add('active');
+  }
 }
 
-// 🃏 Render cards for the selected set
+// 🃏 Render all cards from a selected set
 function renderCardsForSet(setName) {
-  const filtered = allCards.filter(row => row[1] === setName);
-  let html = '<div class="card-grid">';
-  filtered.forEach(row => {
-    html += `
-      <div class="card">
-        <h3>${row[0]}</h3>
-        <p><strong>Set:</strong> ${row[1]}</p>
-        <p><strong>Card #:</strong> ${row[2]}</p>
-        <p><strong>Rarity:</strong> ${row[3]}</p>
-        <p><strong>Variance:</strong> ${row[4]}</p>
-        <p><strong>Grade:</strong> ${row[5]}</p>
-        <p><strong>Condition:</strong> ${row[6]}</p>
-        <p><strong>Quantity:</strong> ${row[7]}</p>
-      </div>
+  const filteredCards = allCards.filter(row => row[1] === setName);
+  const grid = document.createElement('div');
+  grid.className = 'card-grid';
+
+  filteredCards.forEach(row => {
+    const [name, set, cardNum, rarity, variant, grade, condition, qty] = row;
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3>${name}</h3>
+      <p><strong>Set:</strong> ${set}</p>
+      <p><strong>Card #:</strong> ${cardNum}</p>
+      <p><strong>Rarity:</strong> ${rarity}</p>
+      <p><strong>Variance:</strong> ${variant}</p>
+      <p><strong>Grade:</strong> ${grade}</p>
+      <p><strong>Condition:</strong> ${condition}</p>
+      <p><strong>Quantity:</strong> ${qty}</p>
     `;
+
+    grid.appendChild(card);
   });
-  html += '</div>';
-  document.getElementById('tableContainer').innerHTML = html;
+
+  const container = document.getElementById('tableContainer');
+  container.innerHTML = '';
+  container.appendChild(grid);
 }
 
-// 📋 Parse CSV text into data rows
+// 📋 Parse CSV text into a data array
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   headers = lines[0].split(',').map(h => h.trim());
   return lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
 }
 
-// 📦 Load the CSV file and initialize the UI
+// 🚀 Load CSV data and initialize UI
 fetch('pokemon-cards.csv')
   .then(response => {
     if (!response.ok) throw new Error('Failed to load CSV file.');
@@ -94,9 +111,11 @@ fetch('pokemon-cards.csv')
   .then(csvText => {
     allCards = parseCSV(csvText);
     renderSetButtons();
-    document.getElementById('tableContainer').innerHTML = '<p>Select a set above to view cards.</p>';
+    if (!currentSeries) {
+      document.getElementById('tableContainer').innerHTML = '<p>Select a set above to view cards.</p>';
+    }
   })
   .catch(error => {
-    console.error("CSV load error:", error);
+    console.error('CSV load error:', error);
     document.getElementById('tableContainer').innerHTML = `<p>Error loading data: ${error.message}</p>`;
   });
