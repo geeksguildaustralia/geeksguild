@@ -278,4 +278,29 @@ footer {
     height: 20px;
     margin-right: 0.3rem;
   }
+
+  /* ==== Force smaller series nav images & buttons ==== */
+
+.series-nav a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  padding: 0.3rem 0.6rem !important;
+  font-size: 0.75rem !important;
+  max-height: 2.2rem !important; /* to force limits */
+  background-color: var(--surface-dark) !important;
+}
+
+.series-nav a img {
+  width: 20px !important;
+  height: 20px !important;
+  object-fit: contain !important;
+  margin-right: 0.3rem !important;
+}
+
+.series-nav {
+  gap: 0.6rem !important;
+  padding: 0.5rem 0 1rem !important;
+}
+
 }
