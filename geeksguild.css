@@ -210,11 +210,14 @@ footer {
     padding: 0.8rem;
   }
 
-  .set-button img.set-img {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 0.3rem;
-  }
+ .set-button img.set-img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-bottom: 0.4rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
 
   /* ========== Secondary Navigation for Series ========== */
 .series-nav {
