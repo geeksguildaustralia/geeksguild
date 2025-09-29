@@ -3,57 +3,101 @@
 <head>
   <meta charset="UTF-8" />
   <title>Geek's Guild – Wizards of the Coast</title>
-  <!-- Use absolute path for CSS so it works from any folder -->
   <link rel="stylesheet" href="/geeksguild.css" />
 </head>
 <body data-series="Wizards of the Coast">
   <header>
     <h1>Geek's Guild</h1>
     <nav>
-      <!-- Use relative path to go up from /series/ to root -->
-      <a href="../index.html">Home</a>
-      <a href="../shop.html">Shop</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../shop.html">Shop</a>
     </nav>
   </header>
-
-  <!-- Series Navigation -->
-  <nav class="series-nav">
-    <a href="/series/wizards_of_the_coast/" class="active">Wizards of the Coast</a>
-<a href="/series/base_set/" >Base Set</a>
-<a href="/series/diamond_and_pearl/" >Diamond and Pearl</a>
-<a href="/series/black_and_white/" >Black and White</a>
-<a href="/series/platinum/" >Platinum</a>
-<a href="/series/xy/" >XY</a>
-<a href="/series/sun_and_moon/" >Sun and Moon</a>
-<a href="/series/sword_and_shield/" >Sword and Shield</a>
-<a href="/series/scarlet_and_violet/" >Scarlet and Violet</a>
-<a href="/series/miscellaneous/" >Miscellaneous</a>
-<a href="/series/mega_evolution/" >Mega Evolution</a>
-  </nav>
 
   <main class="hero">
     <h2>Wizards of the Coast</h2>
     <p>Select a set below to view available cards.</p>
   </main>
 
-  <section class="section">
-    <div id="setButtons" class="set-button-bar"></div>
+  <section class="set-list">
+    
+      <a href="base_set_1st_edition_and_shadowless/index.html" class="set-card">
+        <img src="/images/base_set_1st_edition_and_shadowless.png" alt="Base Set (1st Edition & Shadowless)" />
+        <span>Base Set (1st Edition & Shadowless)</span>
+      </a>
+    
+
+      <a href="base_set_unlimited/index.html" class="set-card">
+        <img src="/images/base_set_unlimited.png" alt="Base Set (Unlimited)" />
+        <span>Base Set (Unlimited)</span>
+      </a>
+    
+
+      <a href="fossil/index.html" class="set-card">
+        <img src="/images/fossil.png" alt="Fossil" />
+        <span>Fossil</span>
+      </a>
+    
+
+      <a href="gym_challenge/index.html" class="set-card">
+        <img src="/images/gym_challenge.png" alt="Gym Challenge" />
+        <span>Gym Challenge</span>
+      </a>
+    
+
+      <a href="gym_heroes/index.html" class="set-card">
+        <img src="/images/gym_heroes.png" alt="Gym Heroes" />
+        <span>Gym Heroes</span>
+      </a>
+    
+
+      <a href="jungle/index.html" class="set-card">
+        <img src="/images/jungle.png" alt="Jungle" />
+        <span>Jungle</span>
+      </a>
+    
+
+      <a href="neo_discovery/index.html" class="set-card">
+        <img src="/images/neo_discovery.png" alt="Neo Discovery" />
+        <span>Neo Discovery</span>
+      </a>
+    
+
+      <a href="neo_discovery_japanese/index.html" class="set-card">
+        <img src="/images/neo_discovery_japanese.png" alt="Neo Discovery (Japanese)" />
+        <span>Neo Discovery (Japanese)</span>
+      </a>
+    
+
+      <a href="neo_genesis/index.html" class="set-card">
+        <img src="/images/neo_genesis.png" alt="Neo Genesis" />
+        <span>Neo Genesis</span>
+      </a>
+    
+
+      <a href="skyridge/index.html" class="set-card">
+        <img src="/images/skyridge.png" alt="Skyridge" />
+        <span>Skyridge</span>
+      </a>
+    
+
+      <a href="southern_islands/index.html" class="set-card">
+        <img src="/images/southern_islands.png" alt="Southern Islands" />
+        <span>Southern Islands</span>
+      </a>
+    
+
+      <a href="team_rocket/index.html" class="set-card">
+        <img src="/images/team_rocket.png" alt="Team Rocket" />
+        <span>Team Rocket</span>
+      </a>
+    
+
+      <a href="wotc_promo/index.html" class="set-card">
+        <img src="/images/wotc_promo.png" alt="WoTC Promo" />
+        <span>WoTC Promo</span>
+      </a>
+    
   </section>
-
-  <section class="section">
-    <div id="tableContainer" class="card-results">Loading data...</div>
-  </section>
-
-  <!-- Use absolute path for JS -->
-  <script src="/shop.js"></script>
-
-  <!-- Include Lightbox HTML here or in separate partial -->
-  <div id="cardLightbox" class="lightbox" style="display:none;">
-    <div class="lightbox-content">
-      <button id="lightboxClose" aria-label="Close lightbox">&times;</button>
-      <img id="lightboxImg" src="" alt="" />
-      <div id="lightboxDetails"></div>
-    </div>
-  </div>
 </body>
 </html>

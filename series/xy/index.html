@@ -3,57 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <title>Geek's Guild – XY</title>
-  <!-- Use absolute path for CSS so it works from any folder -->
   <link rel="stylesheet" href="/geeksguild.css" />
 </head>
 <body data-series="XY">
   <header>
     <h1>Geek's Guild</h1>
     <nav>
-      <!-- Use relative path to go up from /series/ to root -->
-      <a href="../index.html">Home</a>
-      <a href="../shop.html">Shop</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../shop.html">Shop</a>
     </nav>
   </header>
-
-  <!-- Series Navigation -->
-  <nav class="series-nav">
-    <a href="/series/wizards_of_the_coast/" >Wizards of the Coast</a>
-<a href="/series/base_set/" >Base Set</a>
-<a href="/series/diamond_and_pearl/" >Diamond and Pearl</a>
-<a href="/series/black_and_white/" >Black and White</a>
-<a href="/series/platinum/" >Platinum</a>
-<a href="/series/xy/" class="active">XY</a>
-<a href="/series/sun_and_moon/" >Sun and Moon</a>
-<a href="/series/sword_and_shield/" >Sword and Shield</a>
-<a href="/series/scarlet_and_violet/" >Scarlet and Violet</a>
-<a href="/series/miscellaneous/" >Miscellaneous</a>
-<a href="/series/mega_evolution/" >Mega Evolution</a>
-  </nav>
 
   <main class="hero">
     <h2>XY</h2>
     <p>Select a set below to view available cards.</p>
   </main>
 
-  <section class="section">
-    <div id="setButtons" class="set-button-bar"></div>
+  <section class="set-list">
+    
+      <a href="ancient_origins/index.html" class="set-card">
+        <img src="/images/ancient_origins.png" alt="Ancient Origins" />
+        <span>Ancient Origins</span>
+      </a>
+    
+
+      <a href="breakpoint/index.html" class="set-card">
+        <img src="/images/breakpoint.png" alt="BREAKpoint" />
+        <span>BREAKpoint</span>
+      </a>
+    
+
+      <a href="breakthrough/index.html" class="set-card">
+        <img src="/images/breakthrough.png" alt="BREAKthrough" />
+        <span>BREAKthrough</span>
+      </a>
+    
+
+      <a href="evolutions/index.html" class="set-card">
+        <img src="/images/evolutions.png" alt="Evolutions" />
+        <span>Evolutions</span>
+      </a>
+    
+
+      <a href="flashfire/index.html" class="set-card">
+        <img src="/images/flashfire.png" alt="Flashfire" />
+        <span>Flashfire</span>
+      </a>
+    
+
+      <a href="forbidden_light/index.html" class="set-card">
+        <img src="/images/forbidden_light.png" alt="Forbidden Light" />
+        <span>Forbidden Light</span>
+      </a>
+    
+
+      <a href="furious_fists/index.html" class="set-card">
+        <img src="/images/furious_fists.png" alt="Furious Fists" />
+        <span>Furious Fists</span>
+      </a>
+    
+
+      <a href="generations/index.html" class="set-card">
+        <img src="/images/generations.png" alt="Generations" />
+        <span>Generations</span>
+      </a>
+    
+
+      <a href="generations_radiant_collection/index.html" class="set-card">
+        <img src="/images/generations_radiant_collection.png" alt="Generations: Radiant Collection" />
+        <span>Generations: Radiant Collection</span>
+      </a>
+    
+
+      <a href="phantom_forces/index.html" class="set-card">
+        <img src="/images/phantom_forces.png" alt="Phantom Forces" />
+        <span>Phantom Forces</span>
+      </a>
+    
+
+      <a href="primal_clash/index.html" class="set-card">
+        <img src="/images/primal_clash.png" alt="Primal Clash" />
+        <span>Primal Clash</span>
+      </a>
+    
+
+      <a href="roaring_skies/index.html" class="set-card">
+        <img src="/images/roaring_skies.png" alt="Roaring Skies" />
+        <span>Roaring Skies</span>
+      </a>
+    
+
+      <a href="steam_siege/index.html" class="set-card">
+        <img src="/images/steam_siege.png" alt="Steam Siege" />
+        <span>Steam Siege</span>
+      </a>
+    
+
+      <a href="xy_fates_collide/index.html" class="set-card">
+        <img src="/images/xy_fates_collide.png" alt="XY - Fates Collide" />
+        <span>XY - Fates Collide</span>
+      </a>
+    
+
+      <a href="xy_base_set/index.html" class="set-card">
+        <img src="/images/xy_base_set.png" alt="XY Base Set" />
+        <span>XY Base Set</span>
+      </a>
+    
+
+      <a href="xy_promos/index.html" class="set-card">
+        <img src="/images/xy_promos.png" alt="XY Promos" />
+        <span>XY Promos</span>
+      </a>
+    
   </section>
-
-  <section class="section">
-    <div id="tableContainer" class="card-results">Loading data...</div>
-  </section>
-
-  <!-- Use absolute path for JS -->
-  <script src="/shop.js"></script>
-
-  <!-- Include Lightbox HTML here or in separate partial -->
-  <div id="cardLightbox" class="lightbox" style="display:none;">
-    <div class="lightbox-content">
-      <button id="lightboxClose" aria-label="Close lightbox">&times;</button>
-      <img id="lightboxImg" src="" alt="" />
-      <div id="lightboxDetails"></div>
-    </div>
-  </div>
 </body>
 </html>
