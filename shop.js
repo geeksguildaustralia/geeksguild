@@ -24,9 +24,9 @@ function renderSetButtons() {
 
   container.innerHTML = '';
 
-  // ✅ Filter cards if a series is selected
+  // ✅ Filter cards if a series is selected (assuming column 8 = Series)
   const cardsToUse = currentSeries
-    ? allCards.filter(row => row[8] === currentSeries) // Assuming column 8 = Series
+    ? allCards.filter(row => row[8] === currentSeries)
     : allCards;
 
   const uniqueSets = Array.from(new Set(cardsToUse.map(row => row[1]))).sort();
@@ -58,14 +58,14 @@ function renderSetButtons() {
     container.appendChild(btn);
   });
 
-  // Optionally, auto-select the first set
+  // Auto-select first set if available
   if (uniqueSets.length > 0) {
     renderCardsForSet(uniqueSets[0]);
     container.firstChild.classList.add('active');
   }
 }
 
-// 🃏 Render all cards from a selected set
+// 🃏 Render cards for a selected set — show title + thumbnail, click opens lightbox
 function renderCardsForSet(setName) {
   const filteredCards = allCards.filter(row => row[1] === setName);
   const grid = document.createElement('div');
@@ -74,18 +74,23 @@ function renderCardsForSet(setName) {
   filteredCards.forEach(row => {
     const [name, set, cardNum, rarity, variant, grade, condition, qty] = row;
 
+    // Build image path: /cards/series/set/card.png
+    const seriesFolder = currentSeries ? currentSeries.toLowerCase().replace(/[^a-z0-9]/g, '_') : 'unknown_series';
+    const setFolder = set.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const cardFile = normalizeSetNameToFilename(name);
+    const imgSrc = `/cards/${seriesFolder}/${setFolder}/${cardFile}`;
+
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
       <h3>${name}</h3>
-      <p><strong>Set:</strong> ${set}</p>
-      <p><strong>Card #:</strong> ${cardNum}</p>
-      <p><strong>Rarity:</strong> ${rarity}</p>
-      <p><strong>Variance:</strong> ${variant}</p>
-      <p><strong>Grade:</strong> ${grade}</p>
-      <p><strong>Condition:</strong> ${condition}</p>
-      <p><strong>Quantity:</strong> ${qty}</p>
+      <img src="${imgSrc}" alt="${name}" class="card-thumb" style="cursor:pointer; max-width:200px; border-radius:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" />
     `;
+
+    // Lightbox open on click
+    card.querySelector('img').addEventListener('click', () => {
+      openLightbox({ name, set, cardNum, rarity, variant, grade, condition, qty, imgSrc });
+    });
 
     grid.appendChild(card);
   });
@@ -94,6 +99,40 @@ function renderCardsForSet(setName) {
   container.innerHTML = '';
   container.appendChild(grid);
 }
+
+// Lightbox open function
+function openLightbox(card) {
+  const lightbox = document.getElementById('cardLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxDetails = document.getElementById('lightboxDetails');
+
+  lightboxImg.src = card.imgSrc;
+  lightboxImg.alt = card.name;
+
+  lightboxDetails.innerHTML = `
+    <h2>${card.name}</h2>
+    <p><strong>Set:</strong> ${card.set}</p>
+    <p><strong>Card #:</strong> ${card.cardNum}</p>
+    <p><strong>Rarity:</strong> ${card.rarity}</p>
+    <p><strong>Variance:</strong> ${card.variant}</p>
+    <p><strong>Grade:</strong> ${card.grade}</p>
+    <p><strong>Condition:</strong> ${card.condition}</p>
+    <p><strong>Quantity:</strong> ${card.qty}</p>
+  `;
+
+  lightbox.style.display = 'flex';
+}
+
+// Close lightbox events
+document.getElementById('lightboxClose').addEventListener('click', () => {
+  document.getElementById('cardLightbox').style.display = 'none';
+});
+
+document.getElementById('cardLightbox').addEventListener('click', e => {
+  if (e.target.id === 'cardLightbox') {
+    document.getElementById('cardLightbox').style.display = 'none';
+  }
+});
 
 // 📋 Parse CSV text into a data array
 function parseCSV(text) {
