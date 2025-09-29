@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Geek's Guild – Sun and Moon</title>
+  <!-- Use absolute path for CSS so it works from any folder -->
+  <link rel="stylesheet" href="/geeksguild.css" />
+</head>
+<body data-series="Sun and Moon">
+  <header>
+    <h1>Geek's Guild</h1>
+    <nav>
+      <!-- Use relative path to go up from /series/ to root -->
+      <a href="../index.html">Home</a>
+      <a href="../shop.html">Shop</a>
+    </nav>
+  </header>
+
+  <!-- Series Navigation -->
+  <nav class="series-nav">
+    <a href="/series/wizards_of_the_coast/" >Wizards of the Coast</a>
+<a href="/series/base_set/" >Base Set</a>
+<a href="/series/diamond_and_pearl/" >Diamond and Pearl</a>
+<a href="/series/black_and_white/" >Black and White</a>
+<a href="/series/platinum/" >Platinum</a>
+<a href="/series/xy/" >XY</a>
+<a href="/series/sun_and_moon/" class="active">Sun and Moon</a>
+<a href="/series/sword_and_shield/" >Sword and Shield</a>
+<a href="/series/scarlet_and_violet/" >Scarlet and Violet</a>
+<a href="/series/miscellaneous/" >Miscellaneous</a>
+<a href="/series/mega_evolution/" >Mega Evolution</a>
+  </nav>
+
+  <main class="hero">
+    <h2>Sun and Moon</h2>
+    <p>Select a set below to view available cards.</p>
+  </main>
+
+  <section class="section">
+    <div id="setButtons" class="set-button-bar"></div>
+  </section>
+
+  <section class="section">
+    <div id="tableContainer" class="card-results">Loading data...</div>
+  </section>
+
+  <!-- Use absolute path for JS -->
+  <script src="/shop.js"></script>
+
+  <!-- Include Lightbox HTML here or in separate partial -->
+  <div id="cardLightbox" class="lightbox" style="display:none;">
+    <div class="lightbox-content">
+      <button id="lightboxClose" aria-label="Close lightbox">&times;</button>
+      <img id="lightboxImg" src="" alt="" />
+      <div id="lightboxDetails"></div>
+    </div>
+  </div>
+</body>
+</html>

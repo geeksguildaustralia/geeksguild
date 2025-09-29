@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Geek's Guild – Miscellaneous Cards & Products</title>
+  <link rel="stylesheet" href="/geeksguild.css" />
+</head>
+<body data-series="undefined">
+  <header>
+    <h1>Geek's Guild</h1>
+    <nav>
+      <a href="../../../index.html">Home</a>
+      <a href="../../../shop.html">Shop</a>
+    </nav>
+  </header>
+
+  <nav class="series-nav">
+    {{seriesNavLinks}}
+  </nav>
+
+  <main class="hero">
+    <h2>Miscellaneous Cards & Products</h2>
+    <p>Explore all available cards from the <strong>Miscellaneous Cards & Products</strong> set.</p>
+  </main>
+
+  <section class="section">
+    <div id="tableContainer" class="card-results">Loading cards...</div>
+  </section>
+
+  <script src="/shop.js"></script>
+
+  <div id="cardLightbox" class="lightbox" style="display:none;">
+    <div class="lightbox-content">
+      <button id="lightboxClose" aria-label="Close lightbox">&times;</button>
+      <img id="lightboxImg" src="" alt="" />
+      <div id="lightboxDetails"></div>
+    </div>
+  </div>
+</body>
+</html>
