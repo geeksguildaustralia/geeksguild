@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <title>Geek's Guild – {{seriesName}}</title>
+  <link rel="stylesheet" href="{{cssPath}}" />
 </head>
 <body data-series="{{seriesName}}">
   <header>
     <h1>Geek's Guild</h1>
     <nav>
-      <a href="{{rootPath}}index.html">Home</a>
-      <a href="{{rootPath}}shop.html">Shop</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../shop.html">Shop</a>
     </nav>
   </header>
 
@@ -21,7 +22,5 @@
   <section class="set-list">
     {{setLinks}}
   </section>
-
-  <script src="{{rootPath}}shop.js"></script>
 </body>
 </html>

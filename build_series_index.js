@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const csvFile = 'pokemon-cards.csv';  // adjust if needed
-const seriesIndexTemplate = fs.readFileSync('series_index_template.html', 'utf8');
+const csvFile = 'pokemon-cards.csv';  // Adjust path if needed
+const templateFile = 'series_index_template.html'; // Your template
 
-// Normalize names to safe folder/file names
+// Helper: normalize names for folder/file names
 function normalizeName(name) {
   return name.toLowerCase()
     .replace(/&/g, 'and')
@@ -13,36 +13,35 @@ function normalizeName(name) {
     .replace(/^_+|_+$/g, '');
 }
 
-// Simple CSV parser (assuming no commas inside fields)
+// Simple CSV parser (no commas inside fields)
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const headers = lines[0].split(',').map(h => h.trim());
   return lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
 }
 
-// Generate set links HTML for a given series
+// Generate HTML links for sets in a series
 function generateSetLinks(sets) {
   return sets.map(setName => {
     const folderName = normalizeName(setName);
+
+    // Image path relative to series/<seriesName>/index.html
+    // From series/<seriesName>/index.html to images is ../../images/
+    const imgPath = `../../images/${folderName}.png`;
+
     return `
       <a href="${folderName}/index.html" class="set-card">
-        <img src="/images/${folderName}.png" alt="${setName}" />
+        <img src="${imgPath}" alt="${setName}" />
         <span>${setName}</span>
       </a>
     `;
   }).join('\n');
 }
 
-// Calculate root path (relative path back to site root) for a given folder
-// e.g. series/<seriesFolder> is 2 levels deep => rootPath = '../../'
-function getRootPath(folderPath) {
-  // Calculate how deep this folder is relative to 'series' folder
-  const relativePath = path.relative('series', folderPath);
-  if (!relativePath || relativePath === '') return './'; // directly under series folder, so './'
-  const depth = relativePath.split(path.sep).length;
-  return '../'.repeat(depth + 1);  // +1 accounts for 'series' folder itself
-}
+// Read template
+const seriesIndexTemplate = fs.readFileSync(templateFile, 'utf8');
 
+// Read CSV data and process
 fs.readFile(csvFile, 'utf8', (err, data) => {
   if (err) {
     console.error('Error reading CSV:', err);
@@ -51,7 +50,7 @@ fs.readFile(csvFile, 'utf8', (err, data) => {
 
   const cards = parseCSV(data);
 
-  // Group sets by series, exclude "Base Set"
+  // Map series to sets (excluding "Base Set" series)
   const seriesMap = {};
 
   cards.forEach(row => {
@@ -59,8 +58,7 @@ fs.readFile(csvFile, 'utf8', (err, data) => {
     const seriesName = row[8];
 
     if (!seriesName || seriesName.toLowerCase() === 'base set') {
-      // skip base set or empty series
-      return;
+      return; // skip empty or base set
     }
 
     if (!seriesMap[seriesName]) {
@@ -69,27 +67,33 @@ fs.readFile(csvFile, 'utf8', (err, data) => {
     seriesMap[seriesName].add(setName);
   });
 
-  // For each series, generate series index page
+  // Generate index.html per series
   Object.entries(seriesMap).forEach(([seriesName, setsSet]) => {
     const sets = Array.from(setsSet).sort();
     const normalizedSeriesName = normalizeName(seriesName);
     const seriesFolder = path.join('series', normalizedSeriesName);
 
+    // Make folder if doesn't exist
     if (!fs.existsSync(seriesFolder)) {
       fs.mkdirSync(seriesFolder, { recursive: true });
     }
 
     const setLinksHTML = generateSetLinks(sets);
-    const rootPath = getRootPath(seriesFolder);
 
+    // CSS path relative to series/<seriesName>/index.html
+    // From series/<seriesName>/index.html to geeksguild.css is ../../geeksguild.css
+    const cssRelativePath = '../../geeksguild.css';
+
+    // Replace placeholders in template
     const htmlContent = seriesIndexTemplate
       .replace(/{{seriesName}}/g, seriesName)
       .replace('{{setLinks}}', setLinksHTML)
-      .replace(/{{rootPath}}/g, rootPath);
+      .replace('{{cssPath}}', cssRelativePath);
 
+    // Write to series/<seriesName>/index.html
     const outputPath = path.join(seriesFolder, 'index.html');
     fs.writeFileSync(outputPath, htmlContent);
 
-    console.log(`Created ${outputPath} with rootPath=${rootPath}`);
+    console.log(`Created ${outputPath}`);
   });
 });
