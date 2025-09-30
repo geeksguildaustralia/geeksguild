@@ -2,26 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Geek's Guild – {{seriesName}} – {{setName}}</title>
+  <title>{{setName}} – {{seriesName}} | Geek's Guild</title>
   <link rel="stylesheet" href="{{cssPath}}" />
 </head>
-<body data-series="{{seriesName}}" data-set="{{setName}}">
+<body data-series="{{seriesName}}">
   <header>
     <h1>Geek's Guild</h1>
     <nav>
-      <a href="../../index.html">Home</a>
-      <a href="../../shop.html">Shop</a>
-      <a href="../index.html">Back to {{seriesName}}</a>
+      <a href="../../../index.html">Home</a>
+      <a href="../../../shop.html">Shop</a>
     </nav>
   </header>
 
   <main class="hero">
     <h2>{{setName}}</h2>
-    <p>Cards for the {{setName}} set.</p>
+    <p>Browse the cards in this set.</p>
   </main>
 
-  <section class="card-list">
-    <!-- Cards will go here -->
+  <section class="card-grid">
+    {{cardList}}
   </section>
 </body>
 </html>
