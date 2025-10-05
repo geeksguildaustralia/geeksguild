@@ -1,19 +1,21 @@
+/* ========== Variables ========== */
 :root {
   --bg-dark: #121212;
-  --surface-dark: #1e1e1e;
+  --bg-light: #1e1e1e;
   --text-primary: #ffffff;
-  --text-secondary: #aaaaaa;
-  --primary-accent: #4caf50;
+  --primary-accent: #fdd835;
+  --surface-dark: #2c2c2c;
   --shadow-dark: rgba(0, 0, 0, 0.5);
-  --max-width: 1200px;
   --border-radius: 8px;
   --transition: 0.2s ease;
+  --max-width: 1200px;
 }
 
+/* ========== Reset & Base ========== */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -21,75 +23,119 @@ body {
   background-color: var(--bg-dark);
   color: var(--text-primary);
   line-height: 1.6;
+  padding: 0 1rem;
 }
 
-/* ========== HEADER ========== */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ========== Header ========== */
 header {
   background-color: var(--surface-dark);
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 8px var(--shadow-dark);
-  flex-wrap: wrap;
+  padding: 1rem 0;
+  text-align: center;
+  box-shadow: 0 2px 10px var(--shadow-dark);
+  margin-bottom: 2rem;
 }
 
 header h1 {
-  font-size: 1.8rem;
+  font-size: 2rem;
+  color: var(--primary-accent);
+  margin-bottom: 0.5rem;
 }
 
 nav a {
   color: var(--text-primary);
+  margin: 0 0.5rem;
   text-decoration: none;
-  margin-left: 1.5rem;
   font-weight: bold;
   transition: color var(--transition);
 }
 
-nav a:hover,
-nav a.active {
+nav a.active,
+nav a:hover {
   color: var(--primary-accent);
 }
 
-/* ========== HERO SECTION ========== */
+/* ========== Hero Section ========== */
 .hero {
   text-align: center;
-  padding: 2rem 1rem;
-  max-width: var(--max-width);
-  margin: 0 auto;
+  margin-bottom: 2rem;
 }
 
 .hero h2 {
-  font-size: 2rem;
+  font-size: 1.75rem;
   margin-bottom: 0.5rem;
 }
 
 .hero p {
-  font-size: 1rem;
-  color: var(--text-secondary);
+  color: #ccc;
 }
 
-/* ========== SERIES GRID ========== */
+/* ========== Series Grid (Shop Page) ========== */
 .series-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 1.5rem;
-  padding: 2rem 1rem;
+  justify-content: center;
   max-width: var(--max-width);
-  margin: 0 auto;
+  margin: 0 auto 4rem;
 }
 
-.set-card {
+.series-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: var(--surface-dark);
-  width: 120px;
   padding: 1rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 4px 12px var(--shadow-dark);
-  text-align: center;
   text-decoration: none;
   color: var(--text-primary);
+  width: 140px;
+  box-shadow: 0 5px 15px var(--shadow-dark);
+  transition: transform var(--transition), box-shadow var(--transition);
+  text-align: center;
+}
+
+.series-card:hover {
+  transform: translateY(-6px);
+  background-color: var(--primary-accent);
+  color: var(--bg-dark);
+}
+
+.series-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 6px var(--shadow-dark);
+}
+
+.series-card span {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: inherit;
+}
+
+/* ========== Set List (Series Pages) ========== */
+.set-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--surface-dark);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: var(--text-primary);
+  width: 140px;
+  box-shadow: 0 5px 15px var(--shadow-dark);
   transition: transform var(--transition), background-color var(--transition);
+  text-align: center;
 }
 
 .set-card:hover {
@@ -104,104 +150,112 @@ nav a.active {
   object-fit: contain;
   margin-bottom: 0.5rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 6px var(--shadow-dark);
+  box-shadow: 0 3px 8px var(--shadow-dark);
 }
 
 .set-card span {
-  display: block;
-  font-size: 0.85rem;
   font-weight: 600;
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  color: inherit;
 }
 
-/* ========== CARD GRID ========== */
+/* ========== Card Grid ========== */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
   max-width: var(--max-width);
-  margin: 0 auto;
+  margin: 0 auto 4rem;
 }
 
 .card {
   background-color: var(--surface-dark);
   padding: 1rem;
   border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px var(--shadow-dark);
   text-align: center;
-  box-shadow: 0 4px 10px var(--shadow-dark);
+  width: 160px;
 }
 
 .card h3 {
   font-size: 1rem;
-  margin-bottom: 0.6rem;
-  word-wrap: break-word;
+  margin-bottom: 0.75rem;
 }
 
-.card img,
-.card-thumb {
-  width: 100%;
-  max-width: 120px;
+.card img {
+  width: 120px;
   height: auto;
   object-fit: contain;
   border-radius: var(--border-radius);
   box-shadow: 0 4px 12px var(--shadow-dark);
-  transition: transform var(--transition);
   cursor: pointer;
 }
 
-.card-thumb:hover {
-  transform: scale(1.05);
-}
-
-/* ========== LIGHTBOX (Optional Placeholder) ========== */
+/* ========== Lightbox ========== */
 #cardLightbox {
-  display: none; /* Display: flex when active */
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.85);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 2rem;
 }
 
-#lightboxImg {
-  max-width: 90vw;
-  max-height: 80vh;
+#cardLightbox img {
+  max-width: 300px;
+  max-height: 90vh;
   border-radius: var(--border-radius);
+  margin-bottom: 1rem;
 }
 
 #lightboxDetails {
   color: white;
-  margin-top: 1rem;
+  max-width: 400px;
   text-align: left;
+  margin-left: 2rem;
 }
 
-/* ========== RESPONSIVE ========== */
+#lightboxClose {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* ========== Responsive ========== */
 @media (max-width: 768px) {
-  .set-card {
-    width: 100px;
+  .series-card,
+  .set-card,
+  .card {
+    width: 120px;
     padding: 0.8rem;
   }
 
+  .series-card img,
   .set-card img {
     width: 50px;
     height: 50px;
   }
 
-  .set-card span {
-    font-size: 0.75rem;
-  }
-
-  .card h3 {
-    font-size: 0.9rem;
-  }
-
   .card img {
-    max-width: 100px;
+    width: 100px;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .hero h2 {
+    font-size: 1.5rem;
   }
 }
