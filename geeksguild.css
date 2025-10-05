@@ -2,19 +2,21 @@
   --bg-dark: #121212;
   --surface-dark: #1e1e1e;
   --text-primary: #ffffff;
-  --text-secondary: #cccccc;
+  --text-secondary: #aaaaaa;
   --primary-accent: #4caf50;
-  --shadow-dark: rgba(0, 0, 0, 0.4);
+  --shadow-dark: rgba(0, 0, 0, 0.5);
   --max-width: 1200px;
   --border-radius: 8px;
+  --transition: 0.2s ease;
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-primary);
@@ -28,21 +30,20 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
   box-shadow: 0 2px 8px var(--shadow-dark);
+  flex-wrap: wrap;
 }
 
 header h1 {
-  margin: 0;
   font-size: 1.8rem;
 }
 
 nav a {
   color: var(--text-primary);
-  margin-left: 1rem;
   text-decoration: none;
+  margin-left: 1.5rem;
   font-weight: bold;
-  transition: color 0.2s;
+  transition: color var(--transition);
 }
 
 nav a:hover,
@@ -64,8 +65,8 @@ nav a.active {
 }
 
 .hero p {
-  color: var(--text-secondary);
   font-size: 1rem;
+  color: var(--text-secondary);
 }
 
 /* ========== SERIES GRID ========== */
@@ -74,21 +75,21 @@ nav a.active {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.5rem;
-  padding: 2rem 1rem 4rem;
+  padding: 2rem 1rem;
   max-width: var(--max-width);
   margin: 0 auto;
 }
 
 .set-card {
   background-color: var(--surface-dark);
+  width: 120px;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px var(--shadow-dark);
   text-align: center;
   text-decoration: none;
   color: var(--text-primary);
-  width: 140px;
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  box-shadow: 0 5px 15px var(--shadow-dark);
-  transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s;
+  transition: transform var(--transition), background-color var(--transition);
 }
 
 .set-card:hover {
@@ -98,17 +99,17 @@ nav a.active {
 }
 
 .set-card img {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
   margin-bottom: 0.5rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 3px 8px var(--shadow-dark);
+  box-shadow: 0 2px 6px var(--shadow-dark);
 }
 
 .set-card span {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -117,9 +118,9 @@ nav a.active {
 /* ========== CARD GRID ========== */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1.5rem;
-  padding: 2rem 1rem 4rem;
+  padding: 2rem 1rem;
   max-width: var(--max-width);
   margin: 0 auto;
 }
@@ -129,22 +130,24 @@ nav a.active {
   padding: 1rem;
   border-radius: var(--border-radius);
   text-align: center;
-  box-shadow: 0 4px 12px var(--shadow-dark);
+  box-shadow: 0 4px 10px var(--shadow-dark);
 }
 
 .card h3 {
   font-size: 1rem;
   margin-bottom: 0.6rem;
+  word-wrap: break-word;
 }
 
+.card img,
 .card-thumb {
   width: 100%;
-  max-width: 140px;
+  max-width: 120px;
   height: auto;
   object-fit: contain;
   border-radius: var(--border-radius);
   box-shadow: 0 4px 12px var(--shadow-dark);
-  transition: transform 0.2s;
+  transition: transform var(--transition);
   cursor: pointer;
 }
 
@@ -152,23 +155,53 @@ nav a.active {
   transform: scale(1.05);
 }
 
+/* ========== LIGHTBOX (Optional Placeholder) ========== */
+#cardLightbox {
+  display: none; /* Display: flex when active */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.85);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#lightboxImg {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: var(--border-radius);
+}
+
+#lightboxDetails {
+  color: white;
+  margin-top: 1rem;
+  text-align: left;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .set-card {
-    width: 120px;
+    width: 100px;
     padding: 0.8rem;
   }
 
   .set-card img {
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .set-card span {
+    font-size: 0.75rem;
   }
 
   .card h3 {
     font-size: 0.9rem;
   }
 
-  .card-thumb {
-    max-width: 120px;
+  .card img {
+    max-width: 100px;
   }
 }
