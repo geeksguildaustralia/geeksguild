@@ -1,11 +1,14 @@
 const fs = require('fs');
 const path = require('path');
 
+// ==== File paths ====
 const csvFile = 'pokemon-cards.csv';
 const seriesTemplateFile = 'series_index_template.html';
 const setTemplateFile = 'set_index_template.html';
+const outputDir = 'series';
 
-// Normalize strings into safe filenames or folder names
+// ==== Helpers ====
+
 function normalizeName(name) {
   return name.toLowerCase()
     .replace(/&/g, 'and')
@@ -14,40 +17,38 @@ function normalizeName(name) {
     .replace(/^_+|_+$/g, '');
 }
 
-// Parse CSV (basic, no quoted comma support)
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const headers = lines[0].split(',').map(h => h.trim());
-  const rows = lines.slice(1).map(line => line.split(',').map(cell => cell.trim()));
-  return { headers, rows };
+  const dataRows = lines.slice(1);
+  return dataRows.map(line => line.split(',').map(cell => cell.trim()));
 }
 
-// Generate <a> elements for set thumbnails in a series
-function generateSetLinks(sets, seriesName) {
-  const normalizedSeries = normalizeName(seriesName);
-
+function generateSetLinks(seriesName, sets) {
   return sets.map(setName => {
     const normalizedSet = normalizeName(setName);
-    const imgPath = `../../images/${normalizedSet}.png`; // Set icons
-
+    const normalizedSeries = normalizeName(seriesName);
     return `
       <a href="${normalizedSet}/index.html" class="set-card">
-        <img src="${imgPath}" alt="${setName}" onerror="this.onerror=null;this.src='../../images/default_card.png'" />
+        <img src="../../images/${normalizedSet}.png" alt="${setName}" />
         <span>${setName}</span>
       </a>
     `;
   }).join('\n');
 }
 
-// Generate <div class="card"> blocks for a set page
-function generateCardList(cards, seriesName, setName) {
-  const normalizedSeries = normalizeName(seriesName);
-  const normalizedSet = normalizeName(setName);
+function generateCardList(cardsInSet) {
+  return cardsInSet.map(row => {
+    const [cardName, setName, , , , , , , seriesName, filenameOverride] = row;
 
-  return cards.map(row => {
-    const cardName = row[0];
-    const filename = row[9] || normalizeName(cardName); // Column 10 = filename
-    const imgPath = `../../../images/cards/${normalizedSeries}/${normalizedSet}/${filename}.jpg`;
+    const normalizedSeries = normalizeName(seriesName);
+    const normalizedSet = normalizeName(setName);
+
+    const imageFilename = filenameOverride && filenameOverride.length > 0
+      ? filenameOverride
+      : normalizeName(cardName);
+
+    const imgPath = `../../../images/cards/${normalizedSeries}/${normalizedSet}/${imageFilename}.jpeg`;
 
     return `
       <div class="card">
@@ -58,75 +59,76 @@ function generateCardList(cards, seriesName, setName) {
   }).join('\n');
 }
 
-// Read templates
+function ensureDirExists(dirPath) {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+}
+
+// ==== Load Templates ====
 const seriesTemplate = fs.readFileSync(seriesTemplateFile, 'utf8');
 const setTemplate = fs.readFileSync(setTemplateFile, 'utf8');
 
-// Read and parse CSV
-fs.readFile(csvFile, 'utf8', (err, csvText) => {
+// ==== Load and Process CSV ====
+fs.readFile(csvFile, 'utf8', (err, text) => {
   if (err) {
     console.error('Error reading CSV:', err);
     return;
   }
 
-  const { rows } = parseCSV(csvText);
+  const rows = parseCSV(text);
 
-  // Build nested map: series -> set -> [cards]
-  const data = {};
+  // Build series → set → [cards]
+  const seriesMap = {};
+
   rows.forEach(row => {
     const setName = row[1];
     const seriesName = row[8];
-
     if (!setName || !seriesName) return;
 
-    if (!data[seriesName]) data[seriesName] = {};
-    if (!data[seriesName][setName]) data[seriesName][setName] = [];
-
-    data[seriesName][setName].push(row);
+    if (!seriesMap[seriesName]) {
+      seriesMap[seriesName] = {};
+    }
+    if (!seriesMap[seriesName][setName]) {
+      seriesMap[seriesName][setName] = [];
+    }
+    seriesMap[seriesName][setName].push(row);
   });
 
-  // Generate pages
-  Object.entries(data).forEach(([seriesName, sets]) => {
+  Object.entries(seriesMap).forEach(([seriesName, setsObj]) => {
     const normalizedSeries = normalizeName(seriesName);
-    const seriesFolder = path.join('series', normalizedSeries);
+    const seriesFolder = path.join(outputDir, normalizedSeries);
+    ensureDirExists(seriesFolder);
 
-    if (!fs.existsSync(seriesFolder)) {
-      fs.mkdirSync(seriesFolder, { recursive: true });
-    }
-
-    const setNames = Object.keys(sets).sort();
-    const setLinksHTML = generateSetLinks(setNames, seriesName);
-    const cssPathSeries = '../../geeksguild.css';
+    // Generate series index page
+    const setNames = Object.keys(setsObj).sort();
+    const setLinksHTML = generateSetLinks(seriesName, setNames);
 
     const seriesHTML = seriesTemplate
       .replace(/{{seriesName}}/g, seriesName)
       .replace('{{setLinks}}', setLinksHTML)
-      .replace('{{cssPath}}', cssPathSeries);
+      .replace('{{cssPath}}', '../../geeksguild.css');
 
     fs.writeFileSync(path.join(seriesFolder, 'index.html'), seriesHTML);
-    console.log(`✅ Created series page: ${seriesFolder}/index.html`);
+    console.log(`✅ Created: ${path.join(seriesFolder, 'index.html')}`);
 
-    // Generate set pages
+    // Generate each set page
     setNames.forEach(setName => {
       const normalizedSet = normalizeName(setName);
       const setFolder = path.join(seriesFolder, normalizedSet);
+      ensureDirExists(setFolder);
 
-      if (!fs.existsSync(setFolder)) {
-        fs.mkdirSync(setFolder, { recursive: true });
-      }
-
-      const cards = sets[setName];
-      const cardListHTML = generateCardList(cards, seriesName, setName);
-      const cssPathSet = '../../../geeksguild.css';
+      const cardsInSet = setsObj[setName];
+      const cardListHTML = generateCardList(cardsInSet);
 
       const setHTML = setTemplate
         .replace(/{{seriesName}}/g, seriesName)
         .replace(/{{setName}}/g, setName)
         .replace('{{cardList}}', cardListHTML)
-        .replace('{{cssPath}}', cssPathSet);
+        .replace('{{cssPath}}', '../../../geeksguild.css');
 
       fs.writeFileSync(path.join(setFolder, 'index.html'), setHTML);
-      console.log(`   ↳ Created set page: ${setFolder}/index.html`);
+      console.log(`📦 Created: ${path.join(setFolder, 'index.html')}`);
     });
   });
 });
