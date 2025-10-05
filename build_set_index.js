@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const { parse } = require('csv-parse/sync');
 
 const csvFile = 'pokemon-cards.csv';
 const seriesTemplateFile = 'series_index_template.html';
 const setTemplateFile = 'set_index_template.html';
 
+// Normalize names to safe folder/file names
 function normalizeName(name) {
   return name.toLowerCase()
     .replace(/&/g, 'and')
@@ -14,6 +14,20 @@ function normalizeName(name) {
     .replace(/^_+|_+$/g, '');
 }
 
+// Simple CSV parser (splits on tabs or commas, trims cells)
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  // Assume first line is header, skip it
+  const dataRows = lines.slice(1);
+
+  return dataRows.map(line => {
+    // Split by tab OR comma (change depending on your CSV)
+    const cells = line.split(/\t|,/).map(c => c.trim());
+    return cells;
+  });
+}
+
+// Generate HTML for set links (to go into a series page)
 function generateSetLinks(sets) {
   return sets.map(setName => {
     const folderName = normalizeName(setName);
@@ -26,22 +40,28 @@ function generateSetLinks(sets) {
   }).join('\n');
 }
 
+// Generate HTML for cards inside a set page
 function generateCardList(cardsInSet) {
   return cardsInSet.map(row => {
     const cardName = row[0];
     const setName = row[1];
     const seriesName = row[8];
-    const filename = row[9] ? row[9].trim() : '';
+    const filenameRaw = row[9] ? row[9].trim() : '';
 
     const normalizedSeries = normalizeName(seriesName);
     const normalizedSet = normalizeName(setName);
 
-    // Card image path (assume .jpg)
-    let imgPath = `../../../images/cards/${normalizedSeries}/${normalizedSet}/${filename}.jpg`;
+    // Normalize filename for path safety
+    const normalizedFilename = filenameRaw
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '_')
+      .replace(/_+/g, '_')
+      .replace(/^_+|_+$/g, '');
 
-    // If filename missing or empty, fallback to default
-    if (!filename) {
-      imgPath = '../../../images/default_card.png';
+    let imgPath = '../../../images/default_card.png'; // fallback path
+
+    if (filenameRaw) {
+      imgPath = `../../../images/cards/${normalizedSeries}/${normalizedSet}/${normalizedFilename}.jpg`;
     }
 
     return `
@@ -57,74 +77,83 @@ function generateCardList(cardsInSet) {
 const seriesTemplate = fs.readFileSync(seriesTemplateFile, 'utf8');
 const setTemplate = fs.readFileSync(setTemplateFile, 'utf8');
 
-// Read and parse CSV
-const csvText = fs.readFileSync(csvFile, 'utf8');
-
-// Parse CSV with headers, auto skip empty lines
-const records = parse(csvText, {
-  columns: true,
-  skip_empty_lines: true,
-  trim: true
-});
-
-// Build data structure: series → set → cards
-const seriesMap = {};
-
-records.forEach(row => {
-  const setName = row['Set'] || row['set'] || row[1]; // fallback if no headers
-  const seriesName = row['Series'] || row['series'] || row[8];
-  if (!setName || !seriesName) return;
-
-  if (!seriesMap[seriesName]) seriesMap[seriesName] = {};
-  if (!seriesMap[seriesName][setName]) seriesMap[seriesName][setName] = [];
-  seriesMap[seriesName][setName].push(Object.values(row));
-});
-
-// Generate pages
-Object.entries(seriesMap).forEach(([seriesName, setsObj]) => {
-  const normalizedSeries = normalizeName(seriesName);
-  const seriesFolder = path.join('series', normalizedSeries);
-
-  if (!fs.existsSync(seriesFolder)) {
-    fs.mkdirSync(seriesFolder, { recursive: true });
+// Read CSV and build data structure
+fs.readFile(csvFile, 'utf8', (err, text) => {
+  if (err) {
+    console.error('Error reading CSV:', err);
+    return;
   }
 
-  const setNames = Object.keys(setsObj).sort();
+  const rows = parseCSV(text);
 
-  const setLinksHTML = generateSetLinks(setNames);
-  const cssRel = '../../geeksguild.css';
+  // Build nested map: series → set → array of card rows
+  const seriesMap = {};
 
-  const seriesHTML = seriesTemplate
-    .replace(/{{seriesName}}/g, seriesName)
-    .replace('{{setLinks}}', setLinksHTML)
-    .replace('{{cssPath}}', cssRel);
+  rows.forEach(row => {
+    if (row.length < 10) return; // skip malformed rows
 
-  fs.writeFileSync(path.join(seriesFolder, 'index.html'), seriesHTML);
-  console.log(`Wrote series page: ${path.join(seriesFolder, 'index.html')}`);
+    const setName = row[1];
+    const seriesName = row[8];
 
-  // Write sets
-  setNames.forEach(setName => {
-    const normalizedSet = normalizeName(setName);
-    const setFolder = path.join(seriesFolder, normalizedSet);
+    if (!setName || !seriesName) return;
 
-    if (!fs.existsSync(setFolder)) {
-      fs.mkdirSync(setFolder, { recursive: true });
+    if (!seriesMap[seriesName]) {
+      seriesMap[seriesName] = {};
+    }
+    if (!seriesMap[seriesName][setName]) {
+      seriesMap[seriesName][setName] = [];
+    }
+    seriesMap[seriesName][setName].push(row);
+  });
+
+  console.log('Found series:', Object.keys(seriesMap));
+
+  // For each series
+  Object.entries(seriesMap).forEach(([seriesName, setsObj]) => {
+    const normalizedSeries = normalizeName(seriesName);
+    const seriesFolder = path.join('series', normalizedSeries);
+
+    if (!fs.existsSync(seriesFolder)) {
+      fs.mkdirSync(seriesFolder, { recursive: true });
     }
 
-    const cardsInSet = setsObj[setName];
+    // Generate series index page
+    const setNames = Object.keys(setsObj).sort();
+    console.log(`Series "${seriesName}" has sets:`, setNames);
 
-    // Generate card list HTML
-    const cardHTML = generateCardList(cardsInSet);
+    const setLinksHTML = generateSetLinks(setNames);
+    const cssRel = '../../geeksguild.css';
 
-    const cssRelSet = '../../../geeksguild.css';
-
-    const setHTML = setTemplate
+    const seriesHTML = seriesTemplate
       .replace(/{{seriesName}}/g, seriesName)
-      .replace(/{{setName}}/g, setName)
-      .replace('{{cardList}}', cardHTML)
-      .replace('{{cssPath}}', cssRelSet);
+      .replace('{{setLinks}}', setLinksHTML)
+      .replace('{{cssPath}}', cssRel);
 
-    fs.writeFileSync(path.join(setFolder, 'index.html'), setHTML);
-    console.log(`Wrote set page: ${path.join(setFolder, 'index.html')}`);
+    fs.writeFileSync(path.join(seriesFolder, 'index.html'), seriesHTML);
+    console.log(`Wrote series page: ${path.join(seriesFolder, 'index.html')}`);
+
+    // For each set in that series, generate set pages
+    setNames.forEach(setName => {
+      const normalizedSet = normalizeName(setName);
+      const setFolder = path.join(seriesFolder, normalizedSet);
+
+      if (!fs.existsSync(setFolder)) {
+        fs.mkdirSync(setFolder, { recursive: true });
+      }
+
+      const cardsInSet = setsObj[setName];
+      const cardHTML = generateCardList(cardsInSet);
+
+      const cssRelSet = '../../../geeksguild.css';
+
+      const setHTML = setTemplate
+        .replace(/{{seriesName}}/g, seriesName)
+        .replace(/{{setName}}/g, setName)
+        .replace('{{cardList}}', cardHTML)
+        .replace('{{cssPath}}', cssRelSet);
+
+      fs.writeFileSync(path.join(setFolder, 'index.html'), setHTML);
+      console.log(`Wrote set page: ${path.join(setFolder, 'index.html')}`);
+    });
   });
 });
