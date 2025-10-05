@@ -133,8 +133,8 @@ Bouffalant ex ,White Flare,077/086,Double Rare,Holofoil,Ungraded,Near Mint,1,Sca
 Chandelure ,White Flare,018/086,Rare,Holofoil,Ungraded,Near Mint,2,Scarlet and Violet,Chandelure 
 Cofagrigus ,White Flare,040/086,Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Cofagrigus 
 Cofagrigus (Master Ball Pattern) ,White Flare,040/086,Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Cofagrigus_master
-Gothitelle ,White Flare,043/086,Rare,Holofoil,Ungraded,Near Mint,2,Scarlet and Violet,Gothitelle 
-Harlequin ,White Flare,163/086,Ultra Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Harlequin 
+Gothitelle ,White Flare,043/086,Rare,Holofoil,Ungraded,Near Mint,2,Scarlet and Violet,Gothitelle
+Harlequin ,White Flare,163/086,Ultra Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Harlequin
 Harlequin (Poke Ball Pattern) ,White Flare,083/086,Uncommon,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Harlequin_pokeball
 Hydreigon ex ,White Flare,067/086,Double Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Hydreigon_ex 
 Hydreigon ex ,White Flare,161/086,Ultra Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Hydreigon_ex_fa
@@ -151,7 +151,7 @@ Terrakion ,White Flare,054/086,Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Vi
 Tornadus ,White Flare,078/086,Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Tornadus 
 Vanillite ,White Flare,111/086,Illustration Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,vanillite_ir
 Virizion ,White Flare,010/086,Rare,Holofoil,Ungraded,Near Mint,2,Scarlet and Violet,Virizion 
-Whimsicott ex ,White Flare,157/086,Ultra Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Whimsicott_ex_fa
+Whimsicott ex ,White Flare,157/086,Ultra Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,whimsicott_ex_fa
 Zoroark ,White Flare,062/086,Rare,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Zoroark 
 Zweilous (Poke Ball Pattern) ,White Flare,066/086,Common,Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Zweilous_pokeball
 Accelgor ,White Flare,009/086,Uncommon,Normal,Ungraded,Near Mint,1,Scarlet and Violet,Accelgor
@@ -169,7 +169,7 @@ Dewott ,White Flare,022/086,Common,Normal,Ungraded,Near Mint,3,Scarlet and Viole
 Druddigon ,White Flare,071/086,Uncommon,Normal,Ungraded,Near Mint,2,Scarlet and Violet,Druddigon 
 Ducklett ,White Flare,025/086,Common,Normal,Ungraded,Near Mint,3,Scarlet and Violet,Ducklett 
 Durant ,White Flare,070/086,Uncommon,Normal,Ungraded,Near Mint,1,Scarlet and Violet,Durant 
-Energy Retrieval ,White Flare,082/086,Uncommon,Normal,Ungraded,Near Mint,3,Scarlet and Violet,Energy Retrieval 
+Energy Retrieval ,White Flare,082/086,Uncommon,Normal,Ungraded,Near Mint,3,Scarlet and Violet,energy_retrieval 
 Ferrothorn ,White Flare,069/086,Uncommon,Normal,Ungraded,Near Mint,3,Scarlet and Violet,Ferrothorn 
 Galvantula ,White Flare,034/086,Uncommon,Normal,Ungraded,Near Mint,2,Scarlet and Violet,Galvantula 
 Garbodor ,White Flare,060/086,Uncommon,Normal,Ungraded,Near Mint,1,Scarlet and Violet,Garbodor 
@@ -209,7 +209,7 @@ Swadloon ,White Flare,002/086,Common,Normal,Ungraded,Near Mint,1,Scarlet and Vio
 Swanna ,White Flare,026/086,Uncommon,Normal,Ungraded,Near Mint,4,Scarlet and Violet,Swanna 
 Swoobat ,White Flare,037/086,Uncommon,Normal,Ungraded,Near Mint,3,Scarlet and Violet,Swoobat 
 Tepig ,White Flare,011/086,Common,Normal,Ungraded,Near Mint,5,Scarlet and Violet,Tepig 
-Tool Scrapper ,White Flare,085/086,Uncommon,Normal,Ungraded,Near Mint,3,Scarlet and Violet,Tool Scrapper 
+Tool Scrapper ,White Flare,085/086,Uncommon,Normal,Ungraded,Near Mint,3,Scarlet and Violet,Tool_Scrapper 
 Trubbish ,White Flare,059/086,Common,Normal,Ungraded,Near Mint,1,Scarlet and Violet,Trubbish 
 Vanillish ,White Flare,028/086,Common,Normal,Ungraded,Near Mint,4,Scarlet and Violet,Vanillish 
 Vanillite ,White Flare,027/086,Common,Normal,Ungraded,Near Mint,2,Scarlet and Violet,Vanillite 
@@ -230,9 +230,9 @@ Cottonee ,White Flare,004/086,Common,Reverse Holofoil,Ungraded,Near Mint,1,Scarl
 Deino ,White Flare,065/086,Common,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Deino 
 Druddigon ,White Flare,071/086,Uncommon,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Druddigon 
 Durant ,White Flare,070/086,Uncommon,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Durant 
-Energy Retrieval ,White Flare,082/086,Uncommon,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Energy Retrieval 
+Energy Retrieval ,White Flare,082/086,Uncommon,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,energy_retrieval 
 Frillish ,White Flare,044/086,Common,Reverse Holofoil,Ungraded,Near Mint,2,Scarlet and Violet,Frillish 
-Ignition Energy ,White Flare,086/086,Uncommon,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Ignition Energy 
+Ignition Energy ,White Flare,086/086,Uncommon,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,ignition_energy 
 Lampent ,White Flare,017/086,Common,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Lampent 
 Litwick ,White Flare,016/086,Common,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Litwick 
 Mandibuzz ,White Flare,064/086,Uncommon,Reverse Holofoil,Ungraded,Near Mint,1,Scarlet and Violet,Mandibuzz 
