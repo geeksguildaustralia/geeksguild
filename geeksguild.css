@@ -1,128 +1,63 @@
-/* ===== Global Variables ===== */
 :root {
-  --bg-dark: #121212;
-  --surface-dark: #1e1e1e;
-  --primary-accent: #3b82f6; /* bright blue */
+  --surface-dark: #2a2a2a;
+  --primary-accent: #ff6f61;
   --text-primary: #f0f0f0;
-  --text-secondary: #bbbbbb;
+  --bg-dark: #121212;
   --shadow-dark: rgba(0, 0, 0, 0.7);
-  --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* ===== Global Styles ===== */
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background-color: var(--bg-dark);
-  color: var(--text-primary);
-  font-family: var(--font-sans);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ===== Header and Navigation ===== */
-header {
-  background-color: var(--surface-dark);
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 6px var(--shadow-dark);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+/* ========== Series Grid (Shop Page) ========== */
+.series-grid {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 2rem auto;
+}
+
+.series-card {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-}
-
-header h1 {
-  margin: 0;
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: 1px;
-  color: var(--primary-accent);
-}
-
-nav a {
-  color: var(--text-secondary);
+  width: 120px;
+  padding: 0.8rem;
+  border-radius: 8px;
+  background-color: var(--surface-dark);
+  color: var(--text-primary);
   text-decoration: none;
-  margin-left: 1.5rem;
-  font-weight: 600;
-  transition: color 0.3s ease;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-nav a.active,
-nav a:hover {
-  color: var(--primary-accent);
-  text-shadow: 0 0 8px var(--primary-accent);
-}
-
-/* ===== Main Hero Section ===== */
-.hero {
-  max-width: 900px;
-  margin: 3rem auto 2rem;
-  padding: 1rem 2rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.hero h2 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-  color: var(--primary-accent);
-}
-
-.hero p {
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-  margin-top: 0;
-}
-
-/* ===== Section Styling ===== */
-.series-grid,
-.card-grid {
-  padding: 0 2rem 3rem;
-}
-
-/* ===== Scrollbar Styling (optional) ===== */
-body::-webkit-scrollbar {
-  width: 8px;
-}
-
-body::-webkit-scrollbar-track {
-  background: var(--surface-dark);
-}
-
-body::-webkit-scrollbar-thumb {
+.series-card:hover {
+  transform: translateY(-6px);
   background-color: var(--primary-accent);
-  border-radius: 4px;
+  color: var(--bg-dark);
 }
 
-/* ===== Responsive tweaks ===== */
-@media (max-width: 600px) {
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  nav a {
-    margin: 0.5rem 1rem 0 0;
-  }
-
-  .hero h2 {
-    font-size: 2rem;
-  }
-
-  .hero p {
-    font-size: 1rem;
-  }
+.series-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.6rem;
+  transition: transform 0.3s ease;
 }
 
+.series-card:hover img {
+  transform: scale(1.05);
+}
+
+.series-card span {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: inherit;
+}
 
 /* ========== Set List (Series Index Pages) ========== */
 .set-list {
@@ -172,7 +107,7 @@ body::-webkit-scrollbar-thumb {
   color: inherit;
 }
 
-/* Responsive for set list */
+/* Responsive for set list and series cards */
 @media (max-width: 768px) {
   .set-card {
     width: 120px;
@@ -189,47 +124,20 @@ body::-webkit-scrollbar-thumb {
   .set-card span {
     font-size: 0.85rem;
   }
-}
 
-/* ========== Card Grid Styles (Set Pages) ========== */
-.card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  max-width: 1200px;
-  margin: 2rem auto;
-}
+  .series-card {
+    width: 100px;
+    padding: 0.6rem;
+  }
 
-/* Smaller cards */
-.card {
-  width: 140px;
-  margin: 0.5rem;
-  padding: 0.6rem;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  text-align: center;
-  background-color: var(--surface-dark);
-  transition: transform 0.2s ease;
-}
+  .series-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.4rem;
+    border-radius: 6px;
+  }
 
-.card:hover {
-  transform: translateY(-4px);
-}
-
-.card h3 {
-  font-size: 0.9rem;
-  margin: 0.4rem 0 0.6rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.card img {
-  width: 100%;
-  max-width: 120px;
-  height: auto;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
+  .series-card span {
+    font-size: 0.8rem;
+  }
 }
