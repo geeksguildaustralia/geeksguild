@@ -64,3 +64,46 @@
     font-size: 0.85rem;
   }
 }
+
+/* ========== Card Grid Styles (Set Pages) ========== */
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 2rem auto;
+}
+
+/* Smaller cards */
+.card {
+  width: 140px;
+  margin: 0.5rem;
+  padding: 0.6rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  text-align: center;
+  background-color: var(--surface-dark);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card h3 {
+  font-size: 0.9rem;
+  margin: 0.4rem 0 0.6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card img {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
