@@ -15,11 +15,13 @@ const CSS_PATH_SET = '../../../geeksguild.css';
 
 // Normalize a name to be used safely in filenames/URLs
 function normalizeName(name) {
-  return name.toLowerCase()
-    .replace(/&/g, 'and')               // Replace "&" with "and"
-    .replace(/[^a-z0-9]/g, '_')         // Replace all non-alphanumeric with "_"
-    .replace(/_+/g, '_')                // Collapse multiple underscores
-    .replace(/^_+|_+$/g, '');           // Trim leading/trailing underscores
+  return name
+    .toLowerCase()
+    .replace(/&/g, 'and')            // Replace "&" with "and"
+    .replace(/'/g, '')               // Remove apostrophes
+    .replace(/[^a-z0-9]/g, '_')      // Replace non-alphanumeric with "_"
+    .replace(/_+/g, '_')             // Collapse multiple underscores
+    .replace(/^_+|_+$/g, '');        // Trim leading/trailing underscores
 }
 
 // Parse CSV into array of arrays
@@ -72,11 +74,6 @@ function generateCardList(cards) {
 
 // === MAIN SCRIPT ===
 
-if (!fs.existsSync(SERIES_TEMPLATE_FILE) || !fs.existsSync(SET_TEMPLATE_FILE)) {
-  console.error('❌ Missing HTML template file(s)');
-  process.exit(1);
-}
-
 const seriesTemplate = fs.readFileSync(SERIES_TEMPLATE_FILE, 'utf8');
 const setTemplate = fs.readFileSync(SET_TEMPLATE_FILE, 'utf8');
 
@@ -87,23 +84,14 @@ fs.readFile(CSV_FILE, 'utf8', (err, csvText) => {
   }
 
   const rows = parseCSV(csvText).filter(row => row.length >= 10);
-  console.log("📦 Parsed CSV rows:", rows.length);
-
-  if (rows.length === 0) {
-    console.warn('⚠️ No valid rows found in CSV. Check column structure.');
-    return;
-  }
 
   // Group cards by series → set
   const seriesMap = {};
 
-  rows.forEach((row, i) => {
+  rows.forEach(row => {
     const setName = row[1];
     const seriesName = row[8];
-    if (!seriesName || !setName) {
-      console.warn(`⚠️ Skipping row ${i + 1}: missing series or set`);
-      return;
-    }
+    if (!seriesName || !setName) return;
 
     if (!seriesMap[seriesName]) seriesMap[seriesName] = {};
     if (!seriesMap[seriesName][setName]) seriesMap[seriesName][setName] = [];
