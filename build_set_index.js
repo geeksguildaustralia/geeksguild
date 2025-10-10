@@ -1,3 +1,5 @@
+console.log('Current working directory:', process.cwd());
+
 const fs = require('fs');
 const path = require('path');
 
@@ -127,17 +129,35 @@ fs.readFile(CSV_FILE, 'utf8', (err, csvText) => {
     const seriesDir = path.join(OUTPUT_DIR, seriesSlug);
     if (!fs.existsSync(seriesDir)) fs.mkdirSync(seriesDir, { recursive: true });
 
+    // Timestamp for footer
+    const now = new Date().toISOString();
+
     // Create Series Index Page
     const setNames = Object.keys(sets).sort();
-    const seriesHTML = seriesTemplate
+    let seriesHTML = seriesTemplate
       .replace(/{{seriesName}}/g, seriesName)
       .replace('{{setLinks}}', generateSetLinks(seriesName, setNames))
       .replace('{{cssPath}}', CSS_PATH_SERIES);
 
+    // Append timestamp footer before closing </body>
+    seriesHTML = seriesHTML.replace('</body>', `<footer>Generated at ${now}</footer></body>`);
+
     const seriesIndexPath = path.join(seriesDir, 'index.html');
     console.log('Writing series index to:', seriesIndexPath);
+
+    // Preview what will be written
+    console.log('--- Series HTML Preview ---');
+    console.log(seriesHTML.slice(0, 500));
+    console.log('--------------------------');
+
     fs.writeFileSync(seriesIndexPath, seriesHTML);
     console.log(`✅ Wrote series index: ${seriesIndexPath}`);
+
+    // Verify the written file
+    const writtenContent = fs.readFileSync(seriesIndexPath, 'utf8');
+    console.log('--- Verified Written Content Preview ---');
+    console.log(writtenContent.slice(0, 300));
+    console.log('---------------------------------------');
 
     // Create Set Pages
     setNames.forEach(setName => {
@@ -151,16 +171,31 @@ fs.readFile(CSV_FILE, 'utf8', (err, csvText) => {
       if (!fs.existsSync(setDir)) fs.mkdirSync(setDir, { recursive: true });
 
       const cards = sets[setName];
-      const setHTML = setTemplate
+      let setHTML = setTemplate
         .replace(/{{seriesName}}/g, seriesName)
         .replace(/{{setName}}/g, setName)
         .replace('{{cardList}}', generateCardList(cards))
         .replace('{{cssPath}}', CSS_PATH_SET);
 
+      // Append timestamp footer before closing </body>
+      setHTML = setHTML.replace('</body>', `<footer>Generated at ${now}</footer></body>`);
+
       const setIndexPath = path.join(setDir, 'index.html');
       console.log('Writing set page to:', setIndexPath);
+
+      // Preview before writing
+      console.log('--- Set HTML Preview ---');
+      console.log(setHTML.slice(0, 500));
+      console.log('-----------------------');
+
       fs.writeFileSync(setIndexPath, setHTML);
       console.log(`✅ Wrote set page: ${setIndexPath}`);
+
+      // Verify the written file
+      const writtenSetContent = fs.readFileSync(setIndexPath, 'utf8');
+      console.log('--- Verified Written Set Content Preview ---');
+      console.log(writtenSetContent.slice(0, 300));
+      console.log('--------------------------------------------');
     });
   });
 });
