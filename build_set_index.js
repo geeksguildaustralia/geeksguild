@@ -61,8 +61,12 @@ function generateCardList(cards) {
 
     const seriesSlug = normalizeName(series);
     const setSlug = normalizeName(set);
-    const fileName = `${seriesSlug}-${setSlug}-${cardNum}`;
-    const imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}.jpg`;
+
+    // Convert cardNum to integer to remove leading zeros and strip suffixes like '/102'
+    const cleanCardNum = parseInt(cardNum.trim().split(/[^\d]+/)[0], 10) || 0;
+
+    const fileName = `${seriesSlug}-${setSlug}-${cleanCardNum}.jpg`;
+    const imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}`;
 
     return `
       <div class="card">
