@@ -9,7 +9,7 @@ const SERIES_TEMPLATE_FILE = 'series_index_template.html';
 const SET_TEMPLATE_FILE = 'set_index_template.html';
 const OUTPUT_DIR = 'series';
 const CARD_IMG_BASE_PATH = '../../../images/cards';
-const FALLBACK_IMG = '../../../images/default_card.jpg';
+const FALLBACK_IMG = '../../../images/default-card.jpg';
 const CSS_PATH_SERIES = '../../geeksguild.css';
 const CSS_PATH_SET = '../../../geeksguild.css';
 

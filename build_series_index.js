@@ -8,9 +8,10 @@ const templateFile = 'series_index_template.html'; // Your template
 function normalizeName(name) {
   return name.toLowerCase()
     .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]/g, '_')
-    .replace(/_+/g, '_')
-    .replace(/^_+|_+$/g, '');
+    .replace(/'/g, '')
+    .replace(/[^a-z0-9]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 // Simple CSV parser (no commas inside fields)
