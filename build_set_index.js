@@ -65,7 +65,8 @@ function generateCardList(cards) {
     // Convert cardNum to integer to remove leading zeros and strip suffixes like '/102'
     const cleanCardNum = parseInt(cardNum.trim().split(/[^\d]+/)[0], 10) || 0;
 
-    const fileName = `${seriesSlug}-${setSlug}-${cleanCardNum}.jpg`;
+    // Use underscores instead of dashes in filename
+    const fileName = `${seriesSlug}_${setSlug}_${cleanCardNum}.jpg`;
     const imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}`;
 
     return `
