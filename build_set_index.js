@@ -19,9 +19,9 @@ function normalizeName(name) {
     .toLowerCase()
     .replace(/&/g, 'and')            // Replace "&" with "and"
     .replace(/'/g, '')               // Remove apostrophes
-    .replace(/[^a-z0-9]/g, '_')      // Replace non-alphanumeric with "_"
-    .replace(/_+/g, '_')             // Collapse multiple underscores
-    .replace(/^_+|_+$/g, '');        // Trim leading/trailing underscores
+    .replace(/[^a-z0-9]/g, '-')      // Replace non-alphanumeric with "-"
+    .replace(/-+/g, '-')             // Collapse multiple dashes
+    .replace(/^-+|-+$/g, '');        // Trim leading/trailing dashes
 }
 
 // Parse CSV into array of arrays
@@ -62,11 +62,12 @@ function generateCardList(cards) {
     const seriesSlug = normalizeName(series);
     const setSlug = normalizeName(set);
 
-    // Convert cardNum to integer to remove leading zeros and strip suffixes like '/102'
+    // Extract leading number and clean card number
     const cleanCardNum = parseInt(cardNum.trim().split(/[^\d]+/)[0], 10) || 0;
 
-    // Use underscores instead of dashes in filename
-    const fileName = `${seriesSlug}_${setSlug}_${cleanCardNum}.jpg`;
+    // Use dashes to match actual filenames, no replacement to underscores
+    const fileName = `${seriesSlug}-${setSlug}-${cleanCardNum}.jpg`;
+
     const imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}`;
 
     return `
