@@ -30,7 +30,7 @@ function parseCSV(csvText) {
   return lines.map(line => line.split(',').map(cell => cell.trim()));
 }
 
-// Extract leading number from a card number like "009/086"
+// Extract leading number from a card number like "3" or "003"
 function extractCardNumber(cardNumStr) {
   const match = cardNumStr.match(/^(\d+)/);
   return match ? parseInt(match[1], 10) : 0;
@@ -57,10 +57,11 @@ function generateCardList(cards) {
   });
 
   return sortedCards.map(row => {
-    const [name, set, cardNum, rarity, variant, grade, condition, qty, series, filenameRaw] = row;
-    const fileName = filenameRaw ? normalizeName(filenameRaw) : normalizeName(name);
+    const [name, set, cardNum, rarity, variant, grade, condition, qty, series] = row;
+
     const seriesSlug = normalizeName(series);
     const setSlug = normalizeName(set);
+    const fileName = `${seriesSlug}-${setSlug}-${cardNum}`;
     const imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}.jpg`;
 
     return `
@@ -83,7 +84,7 @@ fs.readFile(CSV_FILE, 'utf8', (err, csvText) => {
     return;
   }
 
-  const rows = parseCSV(csvText).filter(row => row.length >= 10);
+  const rows = parseCSV(csvText).filter(row => row.length >= 9);
 
   // Group cards by series → set
   const seriesMap = {};
