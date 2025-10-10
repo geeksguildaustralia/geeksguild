@@ -13,34 +13,40 @@ const CSS_PATH_SET = '../../../geeksguild.css';
 
 // === UTILITY FUNCTIONS ===
 
-// Normalize a name to be used safely in filenames/URLs
 function normalizeName(name) {
+  if (!name) {
+    console.warn('Warning: normalizeName called with empty or undefined name');
+    return '';
+  }
   return name
     .toLowerCase()
-    .replace(/&/g, 'and')            // Replace "&" with "and"
-    .replace(/'/g, '')               // Remove apostrophes
-    .replace(/[^a-z0-9]/g, '-')      // Replace non-alphanumeric with "-"
-    .replace(/-+/g, '-')             // Collapse multiple dashes
-    .replace(/^-+|-+$/g, '');        // Trim leading/trailing dashes
+    .replace(/&/g, 'and')
+    .replace(/'/g, '')
+    .replace(/[^a-z0-9]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
-// Parse CSV into array of arrays
 function parseCSV(csvText) {
   const lines = csvText.trim().split('\n');
   return lines.map(line => line.split(',').map(cell => cell.trim()));
 }
 
-// Extract leading number from a card number like "3" or "003"
 function extractCardNumber(cardNumStr) {
   const match = cardNumStr.match(/^(\d+)/);
   return match ? parseInt(match[1], 10) : 0;
 }
 
-// Generate HTML for set links in a series page
 function generateSetLinks(seriesName, setNames) {
+  const seriesSlug = normalizeName(seriesName);
+  if (!seriesSlug) {
+    console.warn(`Warning: generateSetLinks got empty seriesSlug for seriesName "${seriesName}"`);
+  }
   return setNames.map(setName => {
     const setSlug = normalizeName(setName);
-    const seriesSlug = normalizeName(seriesName);
+    if (!setSlug) {
+      console.warn(`Warning: generateSetLinks got empty setSlug for setName "${setName}"`);
+    }
     return `
       <a href="${setSlug}/index.html" class="set-card">
         <img src="../../images/${seriesSlug}.png" alt="${setName}" />
@@ -50,24 +56,25 @@ function generateSetLinks(seriesName, setNames) {
   }).join('\n');
 }
 
-// Generate HTML for cards in a set page
 function generateCardList(cards) {
-  const sortedCards = cards.slice().sort((a, b) => {
-    return extractCardNumber(a[2]) - extractCardNumber(b[2]);
-  });
+  const sortedCards = cards.slice().sort((a, b) => extractCardNumber(a[2]) - extractCardNumber(b[2]));
 
   return sortedCards.map(row => {
-    const [name, set, cardNum, rarity, variant, grade, condition, qty, series] = row;
+    const [name, set, cardNum, , , , , , series] = row;
 
     const seriesSlug = normalizeName(series);
     const setSlug = normalizeName(set);
 
-    // Extract leading number and clean card number
+    if (!seriesSlug) {
+      console.warn(`Warning: generateCardList got empty seriesSlug for series "${series}"`);
+    }
+    if (!setSlug) {
+      console.warn(`Warning: generateCardList got empty setSlug for set "${set}"`);
+    }
+
     const cleanCardNum = parseInt(cardNum.trim().split(/[^\d]+/)[0], 10) || 0;
 
-    // Use dashes to match actual filenames, no replacement to underscores
     const fileName = `${seriesSlug}-${setSlug}-${cleanCardNum}.jpg`;
-
     const imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}`;
 
     return `
@@ -98,7 +105,11 @@ fs.readFile(CSV_FILE, 'utf8', (err, csvText) => {
   rows.forEach(row => {
     const setName = row[1];
     const seriesName = row[8];
-    if (!seriesName || !setName) return;
+
+    if (!seriesName || !setName) {
+      console.warn('Skipping row due to missing series or set:', row);
+      return;
+    }
 
     if (!seriesMap[seriesName]) seriesMap[seriesName] = {};
     if (!seriesMap[seriesName][setName]) seriesMap[seriesName][setName] = [];
@@ -108,22 +119,34 @@ fs.readFile(CSV_FILE, 'utf8', (err, csvText) => {
 
   Object.entries(seriesMap).forEach(([seriesName, sets]) => {
     const seriesSlug = normalizeName(seriesName);
+    if (!seriesSlug) {
+      console.warn(`Skipping series with empty slug: "${seriesName}"`);
+      return;
+    }
+
     const seriesDir = path.join(OUTPUT_DIR, seriesSlug);
     if (!fs.existsSync(seriesDir)) fs.mkdirSync(seriesDir, { recursive: true });
 
-    // === Create Series Index Page ===
+    // Create Series Index Page
     const setNames = Object.keys(sets).sort();
     const seriesHTML = seriesTemplate
       .replace(/{{seriesName}}/g, seriesName)
       .replace('{{setLinks}}', generateSetLinks(seriesName, setNames))
       .replace('{{cssPath}}', CSS_PATH_SERIES);
 
-    fs.writeFileSync(path.join(seriesDir, 'index.html'), seriesHTML);
-    console.log(`✅ Wrote series index: ${path.join(seriesDir, 'index.html')}`);
+    const seriesIndexPath = path.join(seriesDir, 'index.html');
+    console.log('Writing series index to:', seriesIndexPath);
+    fs.writeFileSync(seriesIndexPath, seriesHTML);
+    console.log(`✅ Wrote series index: ${seriesIndexPath}`);
 
-    // === Create Set Pages ===
+    // Create Set Pages
     setNames.forEach(setName => {
       const setSlug = normalizeName(setName);
+      if (!setSlug) {
+        console.warn(`Skipping set with empty slug: "${setName}"`);
+        return;
+      }
+
       const setDir = path.join(seriesDir, setSlug);
       if (!fs.existsSync(setDir)) fs.mkdirSync(setDir, { recursive: true });
 
@@ -134,8 +157,10 @@ fs.readFile(CSV_FILE, 'utf8', (err, csvText) => {
         .replace('{{cardList}}', generateCardList(cards))
         .replace('{{cssPath}}', CSS_PATH_SET);
 
-      fs.writeFileSync(path.join(setDir, 'index.html'), setHTML);
-      console.log(`✅ Wrote set page: ${path.join(setDir, 'index.html')}`);
+      const setIndexPath = path.join(setDir, 'index.html');
+      console.log('Writing set page to:', setIndexPath);
+      fs.writeFileSync(setIndexPath, setHTML);
+      console.log(`✅ Wrote set page: ${setIndexPath}`);
     });
   });
 });
