@@ -115,13 +115,17 @@ function generateCardList(cards) {
     const seriesSlug = normalizeSeriesNameForFilename(card.series);
     let setSlug = normalizeName(card.set);
 
-    // Special case: Radiant Collection sets should use their parent set's folder
+    // Special case: Radiant Collection and Trainer Gallery sets should use their parent set's folder
     if (card.set.includes('Radiant Collection')) {
       if (card.set.includes('Generations')) {
         setSlug = 'generations';
       } else if (card.set.includes('Legendary Treasures')) {
         setSlug = 'legendary-treasures';
       }
+    } else if (card.set.includes('Trainer Gallery')) {
+      // Extract parent set name (e.g., "Astral Radiance Trainer Gallery" -> "astral-radiance")
+      const parentSet = card.set.replace(/\s*Trainer Gallery\s*/i, '').trim();
+      setSlug = normalizeName(parentSet);
     }
 
     if (!seriesSlug) {
