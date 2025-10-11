@@ -113,7 +113,16 @@ function generateCardList(cards) {
 
   return sortedCards.map(card => {
     const seriesSlug = normalizeSeriesNameForFilename(card.series);
-    const setSlug = normalizeName(card.set);
+    let setSlug = normalizeName(card.set);
+
+    // Special case: Radiant Collection sets should use their parent set's folder
+    if (card.set.includes('Radiant Collection')) {
+      if (card.set.includes('Generations')) {
+        setSlug = 'generations';
+      } else if (card.set.includes('Legendary Treasures')) {
+        setSlug = 'legendary-treasures';
+      }
+    }
 
     if (!seriesSlug) {
       console.warn(`Warning: generateCardList got empty seriesSlug for series "${card.series}"`);
