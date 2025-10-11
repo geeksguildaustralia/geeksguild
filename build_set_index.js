@@ -23,6 +23,7 @@ function normalizeName(name) {
   return name
     .toLowerCase()
     .replace(/&/g, 'and')
+    .replace(/\band\b/g, '') // Remove "and" from set names too
     .replace(/'/g, '')
     .replace(/[^a-z0-9]/g, '-')
     .replace(/-+/g, '-')
