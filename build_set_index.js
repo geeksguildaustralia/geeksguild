@@ -91,7 +91,7 @@ function generateCardList(cards) {
 
     const cleanCardNum = parseInt(cardNum.trim().split(/[^\d]+/)[0], 10) || 0;
 
-    const fileName = `${seriesSlug}-${setSlug}-${cleanCardNum}.jpg`;
+    const fileName = `${cleanCardNum}.jpg`;
     const imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}`;
 
     return `
