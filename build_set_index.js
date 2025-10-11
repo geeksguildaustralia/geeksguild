@@ -79,19 +79,20 @@ function generateCardList(cards) {
   
   cards.forEach(row => {
     const [name, set, cardNum, rarity, variance, , , quantity, series] = row;
-    const cleanCardNum = parseInt(cardNum.trim().split(/[^\d]+/)[0], 10) || 0;
-    const key = `${cleanCardNum}`;
+    const trimmedCardNum = cardNum.trim();
+    const cleanCardNum = parseInt(trimmedCardNum.split(/[^\d]+/)[0], 10);
+    const key = trimmedCardNum; // Use the full card number as key
     
     if (!cardMap[key]) {
       cardMap[key] = {
         name,
         set,
-        cardNum,
+        cardNum: trimmedCardNum,
         rarity: rarity || 'N/A',
         series,
         normalQty: 0,
         reverseHoloQty: 0,
-        cleanCardNum
+        cleanCardNum: isNaN(cleanCardNum) ? 0 : cleanCardNum
       };
     }
     
@@ -119,8 +120,30 @@ function generateCardList(cards) {
       console.warn(`Warning: generateCardList got empty setSlug for set "${card.set}"`);
     }
 
-    const fileName = `${card.cleanCardNum}.jpg`;
-    const imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}`;
+    // Check if this is a sealed product
+    let imgPath;
+    const nameLower = card.name.toLowerCase();
+    
+    if (nameLower.includes('elite trainer box')) {
+      // Map set names to sealed product filenames
+      const setMapping = {
+        'black-bolt': 'black-bolt',
+        'white-flare': 'white-flare',
+        'prismatic-evolutions': 'prismatic'
+      };
+      const sealedPrefix = setMapping[setSlug] || setSlug;
+      imgPath = `../../../images/sealed/${sealedPrefix}-etb.jpg`;
+    } else if (nameLower.includes('booster bundle')) {
+      imgPath = `../../../images/sealed/prismatic-booster-bundle.webp`;
+    } else if (nameLower.includes('surprise box')) {
+      imgPath = `../../../images/sealed/prismatic-surprise-box.jpg`;
+    } else if (nameLower.includes('blooming waters')) {
+      imgPath = `../../../images/sealed/blooming-waters.jpg`;
+    } else {
+      // Regular card
+      const fileName = `${card.cleanCardNum}.jpg`;
+      imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}`;
+    }
 
     return `
       <div class="card" 
