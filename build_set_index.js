@@ -80,7 +80,9 @@ function generateCardList(cards) {
   cards.forEach(row => {
     const [name, set, cardNum, rarity, variance, , , quantity, series] = row;
     const trimmedCardNum = cardNum.trim();
-    const cleanCardNum = parseInt(trimmedCardNum.split(/[^\d]+/)[0], 10);
+    // Extract numeric part from card number (e.g., "XY187" -> 187, "123" -> 123)
+    const numericMatch = trimmedCardNum.match(/\d+/);
+    const cleanCardNum = numericMatch ? parseInt(numericMatch[0], 10) : 0;
     const key = trimmedCardNum; // Use the full card number as key
     
     if (!cardMap[key]) {
