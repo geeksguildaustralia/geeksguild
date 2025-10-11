@@ -74,30 +74,63 @@ function generateSetLinks(seriesName, setNames) {
 }
 
 function generateCardList(cards) {
-  const sortedCards = cards.slice().sort((a, b) => extractCardNumber(a[2]) - extractCardNumber(b[2]));
+  // Group cards by card number to aggregate normal and reverse holo quantities
+  const cardMap = {};
+  
+  cards.forEach(row => {
+    const [name, set, cardNum, rarity, variance, , , quantity, series] = row;
+    const cleanCardNum = parseInt(cardNum.trim().split(/[^\d]+/)[0], 10) || 0;
+    const key = `${cleanCardNum}`;
+    
+    if (!cardMap[key]) {
+      cardMap[key] = {
+        name,
+        set,
+        cardNum,
+        rarity: rarity || 'N/A',
+        series,
+        normalQty: 0,
+        reverseHoloQty: 0,
+        cleanCardNum
+      };
+    }
+    
+    const isReverseHolo = variance && variance.toLowerCase().includes('reverse');
+    const qty = parseInt(quantity) || 0;
+    
+    if (isReverseHolo) {
+      cardMap[key].reverseHoloQty += qty;
+    } else {
+      cardMap[key].normalQty += qty;
+    }
+  });
 
-  return sortedCards.map(row => {
-    const [name, set, cardNum, , , , , , series] = row;
+  // Convert back to array and sort
+  const sortedCards = Object.values(cardMap).sort((a, b) => a.cleanCardNum - b.cleanCardNum);
 
-    const seriesSlug = normalizeSeriesNameForFilename(series);
-    const setSlug = normalizeName(set);
+  return sortedCards.map(card => {
+    const seriesSlug = normalizeSeriesNameForFilename(card.series);
+    const setSlug = normalizeName(card.set);
 
     if (!seriesSlug) {
-      console.warn(`Warning: generateCardList got empty seriesSlug for series "${series}"`);
+      console.warn(`Warning: generateCardList got empty seriesSlug for series "${card.series}"`);
     }
     if (!setSlug) {
-      console.warn(`Warning: generateCardList got empty setSlug for set "${set}"`);
+      console.warn(`Warning: generateCardList got empty setSlug for set "${card.set}"`);
     }
 
-    const cleanCardNum = parseInt(cardNum.trim().split(/[^\d]+/)[0], 10) || 0;
-
-    const fileName = `${cleanCardNum}.jpg`;
+    const fileName = `${card.cleanCardNum}.jpg`;
     const imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}`;
 
     return `
-      <div class="card">
-        <h3>${name}</h3>
-        <img src="${imgPath}" alt="${name}" onerror="this.src='${FALLBACK_IMG}'" />
+      <div class="card" 
+           data-card-number="${card.cardNum}" 
+           data-set="${card.set}" 
+           data-rarity="${card.rarity}" 
+           data-quantity="${card.normalQty}"
+           data-reverse-holo="${card.reverseHoloQty}">
+        <h3>${card.name}</h3>
+        <img src="${imgPath}" alt="${card.name}" onerror="this.src='${FALLBACK_IMG}'" />
       </div>
     `;
   }).join('\n');
