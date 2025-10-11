@@ -23,6 +23,20 @@ function normalizeName(name) {
   return name
     .toLowerCase()
     .replace(/&/g, 'and')
+    .replace(/'/g, '')
+    .replace(/[^a-z0-9]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function normalizeSeriesNameForFilename(name) {
+  if (!name) {
+    console.warn('Warning: normalizeSeriesNameForFilename called with empty or undefined name');
+    return '';
+  }
+  return name
+    .toLowerCase()
+    .replace(/&/g, 'and')
     .replace(/\band\b/g, '')
     .replace(/'/g, '')
     .replace(/[^a-z0-9]/g, '-')
@@ -65,7 +79,7 @@ function generateCardList(cards) {
   return sortedCards.map(row => {
     const [name, set, cardNum, , , , , , series] = row;
 
-    const seriesSlug = normalizeName(series);
+    const seriesSlug = normalizeSeriesNameForFilename(series);
     const setSlug = normalizeName(set);
 
     if (!seriesSlug) {
