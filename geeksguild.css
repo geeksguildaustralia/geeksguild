@@ -46,8 +46,8 @@ header::after {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 100px;
-  background: linear-gradient(to bottom, transparent, var(--background-dark));
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(23, 28, 33, 0), rgba(23, 28, 33, 0.5) 50%, var(--background-dark));
   pointer-events: none;
 }
 
