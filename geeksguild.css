@@ -35,22 +35,20 @@ img {
 header {
   padding: 6rem 0;
   text-align: center;
-  box-shadow: 0 2px 10px var(--shadow-dark);
   position: relative;
-  z-index: 1;
+  background: url('vecteezy_medieval-castle-with-bridge_23203650.jpg') top center/cover no-repeat;
+  margin-bottom: 0;
 }
 
-header::before {
+header::after {
   content: '';
-  position: fixed;
-  top: 0;
+  position: absolute;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  background: url('header-background.jpg') top center/cover no-repeat;
-  background-attachment: fixed;
-  z-index: -1;
-  opacity: 0.3;
+  height: 150px;
+  background: linear-gradient(to bottom, transparent, var(--background-dark));
+  pointer-events: none;
 }
 
 .header-content {
@@ -84,6 +82,8 @@ nav a:hover {
 .hero {
   text-align: center;
   margin-bottom: 2rem;
+  padding-top: 2rem;
+  background: linear-gradient(to bottom, transparent 0%, transparent 10%, var(--background-dark) 30%);
 }
 
 .hero h2 {
