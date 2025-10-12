@@ -36,7 +36,7 @@ header {
   padding: 3rem 0;
   text-align: center;
   position: relative;
-  background: linear-gradient(to bottom, #4CAF50, #2196F3);
+  background: url('header-background.jpg') center/cover no-repeat;
   margin-bottom: 0;
   box-shadow: 0 2px 10px var(--shadow-dark);
 }
