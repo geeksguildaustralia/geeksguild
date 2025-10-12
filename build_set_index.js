@@ -225,9 +225,6 @@ fs.readFile(CSV_FILE, 'utf8', (err, csvText) => {
       .replace('{{setLinks}}', generateSetLinks(seriesName, setNames))
       .replace('{{cssPath}}', CSS_PATH_SERIES);
 
-    // Append timestamp footer before closing </body>
-    seriesHTML = seriesHTML.replace('</body>', `<footer>Generated at ${now}</footer></body>`);
-
     const seriesIndexPath = path.join(seriesDir, 'index.html');
     console.log('Writing series index to:', seriesIndexPath);
 
@@ -262,9 +259,6 @@ fs.readFile(CSV_FILE, 'utf8', (err, csvText) => {
         .replace(/{{setName}}/g, setName)
         .replace('{{cardList}}', generateCardList(cards))
         .replace('{{cssPath}}', CSS_PATH_SET);
-
-      // Append timestamp footer before closing </body>
-      setHTML = setHTML.replace('</body>', `<footer>Generated at ${now}</footer></body>`);
 
       const setIndexPath = path.join(setDir, 'index.html');
       console.log('Writing set page to:', setIndexPath);
