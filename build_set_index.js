@@ -119,9 +119,8 @@ function generateCardList(cards) {
     if (card.set.includes('Radiant Collection')) {
       if (card.set.includes('Generations')) {
         setSlug = 'generations';
-      } else if (card.set.includes('Legendary Treasures')) {
-        setSlug = 'legendary-treasures';
       }
+      // Note: Legendary Treasures Radiant Collection now has its own folder, so no special handling needed
     } else if (card.set.includes('Trainer Gallery')) {
       // Extract parent set name (e.g., "Astral Radiance Trainer Gallery" -> "astral-radiance")
       const parentSet = card.set.replace(/\s*Trainer Gallery\s*/i, '').trim();
