@@ -33,7 +33,7 @@ img {
 
 /* ========== Header ========== */
 header {
-  background: url('header-background.png') center/cover;
+  background: url('header-background.jpg') center/cover;
   padding: 3.5rem 0;
   text-align: center;
   box-shadow: 0 2px 10px var(--shadow-dark);
