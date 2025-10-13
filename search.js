@@ -70,10 +70,21 @@ function toSlug(text) {
     .trim();
 }
 
+// Convert series name to folder slug (removes "and")
+function seriesToSlug(text) {
+  return text
+    .toLowerCase()
+    .replace(/\sand\s/g, '-')  // Remove " and "
+    .replace(/[&:]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+}
+
 // Generate card image path
 function getCardImagePath(card) {
   const basePath = getBasePath();
-  const seriesSlug = toSlug(card.series);
+  const seriesSlug = seriesToSlug(card.series);
   const setSlug = toSlug(card.set);
   return `${basePath}images/cards/${seriesSlug}/${setSlug}/${card.cardNumber}.jpg`;
 }
@@ -81,7 +92,7 @@ function getCardImagePath(card) {
 // Generate card page URL
 function getCardPageUrl(card) {
   const basePath = getBasePath();
-  const seriesSlug = toSlug(card.series);
+  const seriesSlug = seriesToSlug(card.series);
   const setSlug = toSlug(card.set);
   return `${basePath}series/${seriesSlug}/${setSlug}/index.html#card-${card.cardNumber}`;
 }
