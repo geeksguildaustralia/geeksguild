@@ -27,10 +27,10 @@ async function loadCardData() {
       .map(line => {
         const values = line.split(',');
         return {
-          series: values[0]?.trim() || '',
-          set: values[1]?.trim() || '',
-          cardNumber: values[2]?.trim() || '',
-          name: values[3]?.trim() || ''
+          name: values[0]?.trim() || '',      // Product Name
+          set: values[1]?.trim() || '',       // Set
+          cardNumber: values[2]?.trim() || '', // Card Number
+          series: values[8]?.trim() || ''     // Series
         };
       })
       .filter(card => card.series && card.set && card.cardNumber);
