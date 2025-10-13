@@ -5,8 +5,15 @@ let isDataLoaded = false;
 // Get the base path for fetching CSV
 function getBasePath() {
   const path = window.location.pathname;
-  const depth = (path.match(/\//g) || []).length - 1;
-  return '../'.repeat(depth);
+  // Count directory levels (exclude the filename itself)
+  // For /index.html -> 0 levels up
+  // For /shop.html -> 0 levels up  
+  // For /series/xy/index.html -> 2 levels up
+  // For /series/xy/ancient-origins/index.html -> 3 levels up
+  const parts = path.split('/').filter(p => p);
+  const depth = parts.length - 1; // Subtract 1 for the filename
+  const basePath = depth > 0 ? '../'.repeat(depth) : './';
+  return basePath;
 }
 
 // Load the CSV data once
