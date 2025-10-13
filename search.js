@@ -47,7 +47,8 @@ async function loadCardData() {
           name: values[0]?.trim() || '',      // Product Name
           set: values[1]?.trim() || '',       // Set
           cardNumber: values[2]?.trim() || '', // Card Number
-          series: values[8]?.trim() || ''     // Series
+          series: values[8]?.trim() || '',    // Series
+          fileName: values[9]?.trim() || ''   // File Name
         };
       })
       .filter(card => card.series && card.set && card.cardNumber);
@@ -86,7 +87,9 @@ function getCardImagePath(card) {
   const basePath = getBasePath();
   const seriesSlug = seriesToSlug(card.series);
   const setSlug = toSlug(card.set);
-  return `${basePath}images/cards/${seriesSlug}/${setSlug}/${card.cardNumber}.jpg`;
+  // Use fileName if available, otherwise fall back to cardNumber
+  const imageFile = card.fileName || card.cardNumber;
+  return `${basePath}images/cards/${seriesSlug}/${setSlug}/${imageFile}.jpg`;
 }
 
 // Generate card page URL
