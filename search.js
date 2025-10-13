@@ -2,12 +2,20 @@
 let allCards = [];
 let isDataLoaded = false;
 
+// Get the base path for fetching CSV
+function getBasePath() {
+  const path = window.location.pathname;
+  const depth = (path.match(/\//g) || []).length - 1;
+  return '../'.repeat(depth);
+}
+
 // Load the CSV data once
 async function loadCardData() {
   if (isDataLoaded) return;
   
   try {
-    const response = await fetch('/pokemon-cards.csv');
+    const basePath = getBasePath();
+    const response = await fetch(`${basePath}pokemon-cards.csv`);
     const csvText = await response.text();
     
     // Parse CSV
@@ -45,16 +53,18 @@ function toSlug(text) {
 
 // Generate card image path
 function getCardImagePath(card) {
+  const basePath = getBasePath();
   const seriesSlug = toSlug(card.series);
   const setSlug = toSlug(card.set);
-  return `/images/${seriesSlug}/${setSlug}/${card.cardNumber}.jpg`;
+  return `${basePath}images/${seriesSlug}/${setSlug}/${card.cardNumber}.jpg`;
 }
 
 // Generate card page URL
 function getCardPageUrl(card) {
+  const basePath = getBasePath();
   const seriesSlug = toSlug(card.series);
   const setSlug = toSlug(card.set);
-  return `/series/${seriesSlug}/${setSlug}/index.html#card-${card.cardNumber}`;
+  return `${basePath}series/${seriesSlug}/${setSlug}/index.html#card-${card.cardNumber}`;
 }
 
 // Search cards
