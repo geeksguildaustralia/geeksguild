@@ -15,16 +15,27 @@ async function loadCardData() {
   
   try {
     const basePath = getBasePath();
-    const response = await fetch(`${basePath}pokemon-cards.csv`);
-    const csvText = await response.text();
+    const csvPath = `${basePath}pokemon-cards.csv`;
+    console.log('Loading CSV from:', csvPath);
     
-    // Parse CSV
+    const response = await fetch(csvPath);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const csvText = await response.text();
+    console.log('CSV loaded, length:', csvText.length);
+    
+    // Parse CSV - handle quoted fields properly
     const lines = csvText.split('\n');
     const headers = lines[0].split(',');
+    console.log('CSV Headers:', headers);
     
     allCards = lines.slice(1)
       .filter(line => line.trim())
       .map(line => {
+        // Simple CSV parse (doesn't handle quotes with commas inside)
         const values = line.split(',');
         return {
           name: values[0]?.trim() || '',      // Product Name
@@ -35,6 +46,8 @@ async function loadCardData() {
       })
       .filter(card => card.series && card.set && card.cardNumber);
     
+    console.log('Cards loaded:', allCards.length);
+    console.log('Sample card:', allCards[0]);
     isDataLoaded = true;
   } catch (error) {
     console.error('Failed to load card data:', error);
@@ -72,6 +85,7 @@ function searchCards(query) {
   if (!query || query.length < 2) return [];
   
   query = query.toLowerCase();
+  console.log('Searching for:', query, 'in', allCards.length, 'cards');
   
   const results = allCards.filter(card => {
     const cardNum = card.cardNumber.toLowerCase();
@@ -84,6 +98,8 @@ function searchCards(query) {
            setName.includes(query) ||
            seriesName.includes(query);
   });
+  
+  console.log('Found', results.length, 'results');
   
   // Limit to 20 results
   return results.slice(0, 20);
