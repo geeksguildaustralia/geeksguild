@@ -4,7 +4,14 @@ let isDataLoaded = false;
 
 // Get the base path for fetching CSV
 function getBasePath() {
-  // Use absolute path from root - simpler and more reliable
+  // GitHub Pages might host at /geeksguild/ or root /
+  // Check if we're in a subdirectory
+  const currentPath = window.location.pathname;
+  
+  if (currentPath.startsWith('/geeksguild/')) {
+    return '/geeksguild/';
+  }
+  
   return '/';
 }
 
