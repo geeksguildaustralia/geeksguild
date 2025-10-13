@@ -75,7 +75,7 @@ function getCardImagePath(card) {
   const basePath = getBasePath();
   const seriesSlug = toSlug(card.series);
   const setSlug = toSlug(card.set);
-  return `${basePath}images/${seriesSlug}/${setSlug}/${card.cardNumber}.jpg`;
+  return `${basePath}images/cards/${seriesSlug}/${setSlug}/${card.cardNumber}.jpg`;
 }
 
 // Generate card page URL
