@@ -66,7 +66,7 @@ function generateSetLinks(seriesName, setNames) {
     }
     return `
       <a href="${setSlug}/index.html" class="set-card">
-        <img src="../../images/${seriesSlug}.png" alt="${setName}" />
+        <img src="../../images/${setSlug}.png" alt="${setName}" />
         <span>${setName}</span>
       </a>
     `;
@@ -156,6 +156,9 @@ function generateCardList(cards) {
       // Extract parent set name (e.g., "Astral Radiance Trainer Gallery" -> "astral-radiance")
       const parentSet = card.set.replace(/\s*Trainer Gallery\s*/i, '').trim();
       setSlug = normalizeName(parentSet);
+    } else if (card.set === 'HGSS Promos') {
+      // HGSS Promos images are stored in heartgold-soulsilver-promos folder
+      setSlug = 'heartgold-soulsilver-promos';
     }
 
     if (!seriesSlug) {
