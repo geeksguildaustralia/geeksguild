@@ -37,6 +37,14 @@
             <span class="lightbox-detail-label">Reverse Holo Qty:</span>
             <span class="lightbox-detail-value" id="lightboxReverseHolo"></span>
           </div>
+          <div class="lightbox-detail-item" id="lightboxPokeBallItem" style="display: none;">
+            <span class="lightbox-detail-label">Poke Ball Qty:</span>
+            <span class="lightbox-detail-value" id="lightboxPokeBall"></span>
+          </div>
+          <div class="lightbox-detail-item" id="lightboxMasterBallItem" style="display: none;">
+            <span class="lightbox-detail-label">Master Ball Qty:</span>
+            <span class="lightbox-detail-value" id="lightboxMasterBall"></span>
+          </div>
         </div>
       </div>
     `;
@@ -90,6 +98,8 @@
     const rarity = cardElement.dataset.rarity || 'N/A';
     const quantity = cardElement.dataset.quantity || '1';
     const reverseHolo = cardElement.dataset.reverseHolo || '0';
+    const pokeBall = cardElement.dataset.pokeball || '0';
+    const masterBall = cardElement.dataset.masterball || '0';
 
     // Populate lightbox
     document.getElementById('lightboxImage').src = imgSrc;
@@ -106,6 +116,24 @@
       reverseHoloItem.style.display = 'flex';
     } else {
       reverseHoloItem.style.display = 'none';
+    }
+    
+    // Show/hide Poke Ball item
+    const pokeBallItem = document.getElementById('lightboxPokeBallItem');
+    if (parseInt(pokeBall) > 0) {
+      document.getElementById('lightboxPokeBall').textContent = pokeBall;
+      pokeBallItem.style.display = 'flex';
+    } else {
+      pokeBallItem.style.display = 'none';
+    }
+    
+    // Show/hide Master Ball item
+    const masterBallItem = document.getElementById('lightboxMasterBallItem');
+    if (parseInt(masterBall) > 0) {
+      document.getElementById('lightboxMasterBall').textContent = masterBall;
+      masterBallItem.style.display = 'flex';
+    } else {
+      masterBallItem.style.display = 'none';
     }
 
     lightbox.classList.add('active');

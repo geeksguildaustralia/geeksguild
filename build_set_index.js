@@ -74,37 +74,68 @@ function generateSetLinks(seriesName, setNames) {
 }
 
 function generateCardList(cards) {
-  // Group cards by card number to aggregate normal and reverse holo quantities
+  // Group cards by base name (removing pattern variants) and card number
   const cardMap = {};
   
   cards.forEach(row => {
     const [name, set, cardNum, rarity, variance, , , quantity, series] = row;
     const trimmedCardNum = cardNum.trim();
+    
+    // Remove pattern text from name to get base card name
+    const baseName = name
+      .replace(/\s*\(Poke Ball Pattern\)\s*/gi, '')
+      .replace(/\s*\(Master Ball Pattern\)\s*/gi, '')
+      .trim();
+    
     // Extract numeric part from card number (e.g., "XY187" -> 187, "123" -> 123)
     const numericMatch = trimmedCardNum.match(/\d+/);
     const cleanCardNum = numericMatch ? parseInt(numericMatch[0], 10) : 0;
-    const key = trimmedCardNum; // Use the full card number as key
+    
+    // Use base name + card number as key to group variants
+    const key = `${baseName}|${trimmedCardNum}`;
     
     if (!cardMap[key]) {
       cardMap[key] = {
-        name,
+        name: baseName,
         set,
         cardNum: trimmedCardNum,
         rarity: rarity || 'N/A',
         series,
         normalQty: 0,
         reverseHoloQty: 0,
-        cleanCardNum: isNaN(cleanCardNum) ? 0 : cleanCardNum
+        pokeBallQty: 0,
+        masterBallQty: 0,
+        cleanCardNum: isNaN(cleanCardNum) ? 0 : cleanCardNum,
+        variants: []
       };
     }
     
     const isReverseHolo = variance && variance.toLowerCase().includes('reverse');
+    const isPokeBall = name.toLowerCase().includes('poke ball pattern');
+    const isMasterBall = name.toLowerCase().includes('master ball pattern');
     const qty = parseInt(quantity) || 0;
     
-    if (isReverseHolo) {
+    // Track which variants exist
+    if (isPokeBall) {
+      cardMap[key].pokeBallQty += qty;
+      if (!cardMap[key].variants.includes('Poke Ball')) {
+        cardMap[key].variants.push('Poke Ball');
+      }
+    } else if (isMasterBall) {
+      cardMap[key].masterBallQty += qty;
+      if (!cardMap[key].variants.includes('Master Ball')) {
+        cardMap[key].variants.push('Master Ball');
+      }
+    } else if (isReverseHolo) {
       cardMap[key].reverseHoloQty += qty;
+      if (!cardMap[key].variants.includes('Reverse Holo')) {
+        cardMap[key].variants.push('Reverse Holo');
+      }
     } else {
       cardMap[key].normalQty += qty;
+      if (!cardMap[key].variants.includes('Normal')) {
+        cardMap[key].variants.push('Normal');
+      }
     }
   });
 
@@ -159,15 +190,23 @@ function generateCardList(cards) {
       imgPath = `${CARD_IMG_BASE_PATH}/${seriesSlug}/${setSlug}/${fileName}`;
     }
 
+    // Build variant badge if multiple variants exist
+    const variantCount = card.variants.length;
+    const variantBadge = variantCount > 1 ? `<span class="variant-badge">${variantCount} variants</span>` : '';
+    
     return `
       <div class="card" 
            data-card-number="${card.cardNum}" 
            data-set="${card.set}" 
            data-rarity="${card.rarity}" 
            data-quantity="${card.normalQty}"
-           data-reverse-holo="${card.reverseHoloQty}">
+           data-reverse-holo="${card.reverseHoloQty}"
+           data-pokeball="${card.pokeBallQty}"
+           data-masterball="${card.masterBallQty}"
+           data-variants='${JSON.stringify(card.variants)}'>
         <h3>${card.name}</h3>
         <img src="${imgPath}" alt="${card.name}" onerror="this.src='${FALLBACK_IMG}'" />
+        ${variantBadge}
       </div>
     `;
   }).join('\n');
