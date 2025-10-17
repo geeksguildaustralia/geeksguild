@@ -4,7 +4,7 @@
 
   let allCards = [];
   let currentSlide = 0;
-  const FEATURED_COUNT = 7;
+  const FEATURED_COUNT = 12;
 
   // Load CSV and initialize carousel
   fetch('pokemon-cards.csv')
@@ -184,14 +184,14 @@
           opacity = 1;
         } else if (absDistance === 1) {
           // Adjacent cards - visible on sides with rotation
-          translateX = distance * 350; // Spread horizontally
+          translateX = distance * 280; // Reduced spacing
           translateZ = -150; // Slightly back
           rotateY = distance * -45; // Rotate to face center
           scale = 0.85;
           opacity = 0.7;
         } else if (absDistance === 2) {
           // Far cards - barely visible on edges
-          translateX = distance * 500;
+          translateX = distance * 400; // Reduced spacing
           translateZ = -300;
           rotateY = distance * -55;
           scale = 0.7;
