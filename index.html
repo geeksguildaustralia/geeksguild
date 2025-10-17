@@ -26,15 +26,32 @@
   </header>
 
   <main class="hero">
-    <h2>Catch 'Em All… Before They're Gone!</h2>
-    <p></p>
-    <a href="shop.html" class="btn">Browse Cards</a>
+    <h2>World Of Rare Pokémon Cards</h2>
+    <p>Welcome to the world of rare Pokémon cards. Explore the best cards from hand-picked collections and find the hidden gem.</p>
+    <div class="hero-buttons">
+      <a href="shop.html" class="btn btn-primary">Discover More</a>
+      <a href="shop.html" class="btn btn-secondary">All Collections</a>
+    </div>
   </main>
+
+  <section class="featured-section">
+    <div class="featured-carousel">
+      <button class="carousel-btn carousel-prev">&lt;</button>
+      <div class="carousel-container">
+        <div class="carousel-track" id="featuredCardsTrack">
+          <!-- Featured cards will be loaded here -->
+        </div>
+      </div>
+      <button class="carousel-btn carousel-next">&gt;</button>
+    </div>
+    <div class="carousel-pagination" id="carouselPagination"></div>
+  </section>
 
   <footer>
     <p>&copy; 2025 Geek's Guild</p>
   </footer>
   <script src="search.js"></script>
+  <script src="featured-cards.js"></script>
 </body>
 </html>
 
