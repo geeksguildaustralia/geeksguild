@@ -3,8 +3,9 @@
   'use strict';
 
   let allCards = [];
-  let currentSlide = 0;
+  let currentSlide = 10; // Start from middle so cards are on both sides
   const FEATURED_COUNT = 20;
+  let autoRotateInterval = null;
 
   // Load CSV and initialize carousel
   fetch('pokemon-cards.csv')
@@ -88,18 +89,32 @@
     cardDiv.dataset.index = index;
     
     const imgPath = getCardImagePath(card);
+    const seriesSlug = normalizeSeriesName(card.series);
+    let setSlug = normalizeSetName(card.set);
+    
+    // Special cases for set slugs
+    if (card.set.includes('Trainer Gallery')) {
+      const parentSet = card.set.replace(/\s*Trainer Gallery\s*/i, '').trim();
+      setSlug = normalizeSetName(parentSet);
+    } else if (card.set === 'HGSS Promos') {
+      setSlug = 'heartgold-soulsilver-promos';
+    }
+    
+    const cardLink = `series/${seriesSlug}/${setSlug}/index.html`;
     
     cardDiv.innerHTML = `
-      <div class="featured-card-inner">
-        <img src="${imgPath}" alt="${card.name}" onerror="this.src='images/default-card.jpg'" />
-        <div class="featured-card-info">
-          <h3>${card.name}</h3>
-          <div class="featured-card-details">
-            <span class="featured-card-set">${card.set}</span>
-            <span class="featured-card-number">#${card.cardNum}</span>
+      <a href="${cardLink}" class="featured-card-link">
+        <div class="featured-card-inner">
+          <img src="${imgPath}" alt="${card.name}" onerror="this.src='images/default-card.jpg'" />
+          <div class="featured-card-info">
+            <h3>${card.name}</h3>
+            <div class="featured-card-details">
+              <span class="featured-card-set">${card.set}</span>
+              <span class="featured-card-number">#${card.cardNum}</span>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
     `;
     
     return cardDiv;
@@ -123,7 +138,7 @@
     for (let i = 0; i < FEATURED_COUNT; i++) {
       const dot = document.createElement('button');
       dot.className = 'pagination-dot';
-      if (i === 0) dot.classList.add('active');
+      if (i === currentSlide) dot.classList.add('active');
       dot.dataset.index = i;
       dot.addEventListener('click', () => goToSlide(i));
       pagination.appendChild(dot);
@@ -134,9 +149,28 @@
     document.querySelector('.carousel-next').addEventListener('click', nextSlide);
     
     // Auto-advance every 5 seconds
-    setInterval(nextSlide, 5000);
+    startAutoRotate();
+    
+    // Stop auto-rotation when hovering over carousel
+    const carouselSection = document.querySelector('.featured-carousel');
+    if (carouselSection) {
+      carouselSection.addEventListener('mouseenter', stopAutoRotate);
+      carouselSection.addEventListener('mouseleave', startAutoRotate);
+    }
     
     updateCarousel();
+  }
+  
+  function startAutoRotate() {
+    if (autoRotateInterval) return; // Already running
+    autoRotateInterval = setInterval(nextSlide, 5000);
+  }
+  
+  function stopAutoRotate() {
+    if (autoRotateInterval) {
+      clearInterval(autoRotateInterval);
+      autoRotateInterval = null;
+    }
   }
 
   function goToSlide(index) {

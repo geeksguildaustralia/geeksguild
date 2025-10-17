@@ -669,6 +669,12 @@ main.hero {
   transform-origin: center center;
 }
 
+.featured-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .featured-card:hover {
   transform: scale(1.05) !important;
   z-index: 999 !important;
