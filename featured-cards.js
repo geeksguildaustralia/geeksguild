@@ -4,7 +4,7 @@
 
   let allCards = [];
   let currentSlide = 0;
-  const FEATURED_COUNT = 12;
+  const FEATURED_COUNT = 20;
 
   // Load CSV and initialize carousel
   fetch('pokemon-cards.csv')
@@ -163,8 +163,8 @@
       const distance = index - currentSlide;
       const absDistance = Math.abs(distance);
       
-      // Show 7 cards total (1 center + 3 on each side)
-      if (absDistance > 3) {
+      // Show more cards (1 center + 5 on each side = 11 total)
+      if (absDistance > 5) {
         card.style.opacity = '0';
         card.style.pointerEvents = 'none';
         card.style.visibility = 'hidden';
@@ -183,26 +183,40 @@
           scale = 1;
           opacity = 1;
         } else if (absDistance === 1) {
-          // Adjacent cards - visible on sides with rotation
-          translateX = distance * 280;
-          translateZ = -150;
-          rotateY = distance * -45;
-          scale = 0.85;
-          opacity = 0.8;
+          // Adjacent cards - much closer spacing
+          translateX = distance * 220;
+          translateZ = -120;
+          rotateY = distance * -40;
+          scale = 0.88;
+          opacity = 0.85;
         } else if (absDistance === 2) {
-          // Second tier cards
-          translateX = distance * 480;
-          translateZ = -280;
-          rotateY = distance * -50;
-          scale = 0.7;
-          opacity = 0.6;
+          // Second tier cards - closer
+          translateX = distance * 380;
+          translateZ = -220;
+          rotateY = distance * -45;
+          scale = 0.75;
+          opacity = 0.7;
         } else if (absDistance === 3) {
-          // Third tier cards - furthest visible
-          translateX = distance * 650;
-          translateZ = -400;
+          // Third tier cards - closer
+          translateX = distance * 520;
+          translateZ = -310;
+          rotateY = distance * -50;
+          scale = 0.65;
+          opacity = 0.55;
+        } else if (absDistance === 4) {
+          // Fourth tier cards
+          translateX = distance * 640;
+          translateZ = -390;
+          rotateY = distance * -53;
+          scale = 0.55;
+          opacity = 0.4;
+        } else if (absDistance === 5) {
+          // Fifth tier cards - furthest visible
+          translateX = distance * 750;
+          translateZ = -460;
           rotateY = distance * -55;
-          scale = 0.6;
-          opacity = 0.3;
+          scale = 0.5;
+          opacity = 0.25;
         }
         
         card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
