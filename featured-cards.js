@@ -163,8 +163,8 @@
       const distance = index - currentSlide;
       const absDistance = Math.abs(distance);
       
-      // Only show 4 cards total (1 center + partial views of neighbors)
-      if (absDistance > 2) {
+      // Show 7 cards total (1 center + 3 on each side)
+      if (absDistance > 3) {
         card.style.opacity = '0';
         card.style.pointerEvents = 'none';
         card.style.visibility = 'hidden';
@@ -184,18 +184,25 @@
           opacity = 1;
         } else if (absDistance === 1) {
           // Adjacent cards - visible on sides with rotation
-          translateX = distance * 280; // Reduced spacing
-          translateZ = -150; // Slightly back
-          rotateY = distance * -45; // Rotate to face center
+          translateX = distance * 280;
+          translateZ = -150;
+          rotateY = distance * -45;
           scale = 0.85;
-          opacity = 0.7;
+          opacity = 0.8;
         } else if (absDistance === 2) {
-          // Far cards - barely visible on edges
-          translateX = distance * 400; // Reduced spacing
-          translateZ = -300;
-          rotateY = distance * -55;
+          // Second tier cards
+          translateX = distance * 480;
+          translateZ = -280;
+          rotateY = distance * -50;
           scale = 0.7;
-          opacity = 0.4;
+          opacity = 0.6;
+        } else if (absDistance === 3) {
+          // Third tier cards - furthest visible
+          translateX = distance * 650;
+          translateZ = -400;
+          rotateY = distance * -55;
+          scale = 0.6;
+          opacity = 0.3;
         }
         
         card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
