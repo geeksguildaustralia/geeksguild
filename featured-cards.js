@@ -155,47 +155,52 @@
   }
 
   function updateCarousel() {
-    const track = document.getElementById('featuredCardsTrack');
     const dots = document.querySelectorAll('.pagination-dot');
     const cards = document.querySelectorAll('.featured-card');
-    
-    if (!track) return;
     
     // Apply 3D transforms to each card based on distance from center
     cards.forEach((card, index) => {
       const distance = index - currentSlide;
       const absDistance = Math.abs(distance);
       
-      // Show cards within 3 positions (so we see center + 3 on each side)
-      if (absDistance > 3) {
-        card.style.opacity = 0;
+      // Only show 4 cards total (1 center + partial views of neighbors)
+      if (absDistance > 2) {
+        card.style.opacity = '0';
         card.style.pointerEvents = 'none';
-        card.style.transform = 'translateX(0) translateZ(-1000px) rotateY(0deg) scale(0.5)';
+        card.style.visibility = 'hidden';
       } else {
+        card.style.visibility = 'visible';
         card.style.pointerEvents = 'auto';
         
-        // More pronounced 3D effect
-        let translateX = distance * 200; // Horizontal spacing
-        let translateZ = -absDistance * 300; // Depth - further back
-        let rotateY = distance * 35; // Rotation angle
-        let scale = 1 - (absDistance * 0.2); // Size scaling
-        let opacity = 1 - (absDistance * 0.25); // Visibility
+        // Calculate position and rotation for carousel arc effect
+        let translateX, translateZ, rotateY, scale, opacity;
         
-        // Center card is most prominent
         if (absDistance === 0) {
-          translateZ = 100; // Bring forward
-          scale = 1.1;
+          // Center card - front and center
+          translateX = 0;
+          translateZ = 0;
+          rotateY = 0;
+          scale = 1;
           opacity = 1;
+        } else if (absDistance === 1) {
+          // Adjacent cards - visible on sides with rotation
+          translateX = distance * 350; // Spread horizontally
+          translateZ = -150; // Slightly back
+          rotateY = distance * -45; // Rotate to face center
+          scale = 0.85;
+          opacity = 0.7;
+        } else if (absDistance === 2) {
+          // Far cards - barely visible on edges
+          translateX = distance * 500;
+          translateZ = -300;
+          rotateY = distance * -55;
+          scale = 0.7;
+          opacity = 0.4;
         }
         
-        card.style.transform = `
-          translateX(${translateX}px) 
-          translateZ(${translateZ}px) 
-          rotateY(${rotateY}deg) 
-          scale(${scale})
-        `;
+        card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
         card.style.opacity = opacity;
-        card.style.zIndex = 100 - absDistance;
+        card.style.zIndex = 100 - absDistance * 10;
       }
     });
     
