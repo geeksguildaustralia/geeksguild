@@ -91,6 +91,7 @@
     
     cardDiv.innerHTML = `
       <div class="featured-card-inner">
+        <div class="featured-card-favorite">♥</div>
         <img src="${imgPath}" alt="${card.name}" onerror="this.src='images/default-card.jpg'" />
         <div class="featured-card-info">
           <h3>${card.name}</h3>
@@ -161,9 +162,11 @@
     
     if (!track) return;
     
-    // Calculate offset based on card width + gap
-    const cardWidth = 280; // card width + gap
-    const offset = -currentSlide * cardWidth;
+    // Center the current slide
+    const containerWidth = track.parentElement.offsetWidth;
+    const cardWidth = 300; // card width + gap
+    const centerOffset = (containerWidth / 2) - (cardWidth / 2);
+    const offset = centerOffset - (currentSlide * cardWidth);
     
     track.style.transform = `translateX(${offset}px)`;
     
@@ -172,19 +175,27 @@
       const distance = index - currentSlide;
       const absDistance = Math.abs(distance);
       
-      // Calculate transforms
-      const translateZ = -absDistance * 150; // Cards further away move back
-      const rotateY = distance * 15; // Rotate cards based on position
-      const scale = Math.max(0.8, 1 - absDistance * 0.1); // Scale down distant cards
-      const opacity = Math.max(0.3, 1 - absDistance * 0.2); // Fade distant cards
-      
-      card.style.transform = `
-        translateZ(${translateZ}px) 
-        rotateY(${rotateY}deg) 
-        scale(${scale})
-      `;
-      card.style.opacity = opacity;
-      card.style.zIndex = FEATURED_COUNT - absDistance;
+      if (absDistance > 2) {
+        // Hide cards that are too far away
+        card.style.opacity = 0;
+        card.style.pointerEvents = 'none';
+      } else {
+        card.style.pointerEvents = 'auto';
+        
+        // Calculate transforms for visible cards
+        const translateZ = -absDistance * 200;
+        const rotateY = distance * -25; // Negative for correct rotation direction
+        const scale = 1 - (absDistance * 0.15);
+        const opacity = 1 - (absDistance * 0.4);
+        
+        card.style.transform = `
+          translateZ(${translateZ}px) 
+          rotateY(${rotateY}deg) 
+          scale(${scale})
+        `;
+        card.style.opacity = opacity;
+        card.style.zIndex = 100 - absDistance;
+      }
     });
     
     // Update pagination dots

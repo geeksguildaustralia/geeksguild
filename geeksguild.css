@@ -3,7 +3,7 @@
   --bg-dark: #121212;
   --bg-light: #1e1e1e;
   --text-primary: #ffffff;
-  --primary-accent: #fdd835;
+  --primary-accent: #4FC3F7;
   --surface-dark: #2c2c2c;
   --shadow-dark: rgba(0, 0, 0, 0.5);
   --border-radius: 8px;
@@ -654,7 +654,7 @@ main.hero {
 }
 
 .featured-card {
-  min-width: 260px;
+  min-width: 320px;
   flex-shrink: 0;
   cursor: pointer;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -669,24 +669,49 @@ main.hero {
 
 .featured-card-inner {
   background: var(--surface-dark);
-  border-radius: var(--border-radius);
+  border-radius: 12px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 8px 24px var(--shadow-dark);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
   transition: all 0.5s ease;
   transform-style: preserve-3d;
   backface-visibility: hidden;
 }
 
 .featured-card:hover .featured-card-inner {
-  box-shadow: 0 20px 60px rgba(79, 195, 247, 0.4),
-              0 0 30px rgba(79, 195, 247, 0.2);
-  border: 1px solid rgba(79, 195, 247, 0.3);
+  box-shadow: 0 25px 80px rgba(79, 195, 247, 0.5),
+              0 0 40px rgba(79, 195, 247, 0.3);
+  border: 2px solid rgba(79, 195, 247, 0.5);
+}
+
+.featured-card-favorite {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  z-index: 10;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.featured-card-favorite:hover {
+  background: rgba(79, 195, 247, 0.8);
+  color: #fff;
+  transform: scale(1.1);
 }
 
 .featured-card-inner img {
   width: 100%;
-  height: 360px;
+  height: 440px;
   object-fit: cover;
   display: block;
 }
