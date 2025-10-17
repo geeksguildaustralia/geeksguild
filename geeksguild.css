@@ -93,7 +93,7 @@ nav {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--primary-accent);
+  background: #4FC3F7;
   transition: width 0.3s ease;
 }
 
@@ -102,7 +102,7 @@ nav {
 }
 
 .nav-links a:hover, .nav-links a.active {
-  color: var(--primary-accent);
+  color: #4FC3F7;
 }
 
 /* Add padding to body/main to account for fixed header */
@@ -223,18 +223,53 @@ main.hero {
 .hero {
   text-align: center;
   margin-bottom: 2rem;
-  padding: 5rem 1rem 0 1rem;
+  padding: 8rem 1rem 2rem 1rem;
   position: relative;
   z-index: 1;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: 0;
+  width: 100%;
+  height: 500px;
+  background: url('header-background.jpg') center top/cover no-repeat;
+  mask-image: linear-gradient(to bottom, 
+    black 0%,
+    black 30%,
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0.5) 70%,
+    rgba(0, 0, 0, 0.2) 85%,
+    transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, 
+    black 0%,
+    black 30%,
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0.5) 70%,
+    rgba(0, 0, 0, 0.2) 85%,
+    transparent 100%);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .hero h2 {
-  font-size: 1.75rem;
-  margin-bottom: 0.5rem;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary-accent), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero p {
-  color: #ccc;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 2rem;
 }
 
 /* ========== Series Grid (Shop Page) ========== */
@@ -603,27 +638,30 @@ main.hero {
 }
 
 .carousel-container {
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
   position: relative;
+  perspective: 2000px;
 }
 
 .carousel-track {
   display: flex;
   gap: 20px;
   transition: transform 0.5s ease;
-  padding: 2rem 0;
+  padding: 3rem 0;
+  transform-style: preserve-3d;
 }
 
 .featured-card {
   min-width: 260px;
   flex-shrink: 0;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.5s ease;
+  transform-style: preserve-3d;
 }
 
 .featured-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-20px) translateZ(50px) rotateY(5deg);
 }
 
 .featured-card-inner {
@@ -632,24 +670,15 @@ main.hero {
   overflow: hidden;
   position: relative;
   box-shadow: 0 8px 24px var(--shadow-dark);
-  transition: box-shadow 0.3s ease;
+  transition: all 0.5s ease;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 .featured-card:hover .featured-card-inner {
-  box-shadow: 0 12px 32px rgba(253, 216, 53, 0.3);
-}
-
-.featured-card-timer {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  z-index: 2;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 60px rgba(79, 195, 247, 0.4),
+              0 0 30px rgba(79, 195, 247, 0.2);
+  border: 1px solid rgba(79, 195, 247, 0.3);
 }
 
 .featured-card-inner img {

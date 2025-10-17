@@ -91,7 +91,6 @@
     
     cardDiv.innerHTML = `
       <div class="featured-card-inner">
-        <div class="featured-card-timer">00h 13m 40s</div>
         <img src="${imgPath}" alt="${card.name}" onerror="this.src='images/default-card.jpg'" />
         <div class="featured-card-info">
           <h3>${card.name}</h3>
