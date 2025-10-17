@@ -161,33 +161,35 @@
     
     if (!track) return;
     
-    // Center the current slide
-    const containerWidth = track.parentElement.offsetWidth;
-    const cardWidth = 300; // card width + gap
-    const centerOffset = (containerWidth / 2) - (cardWidth / 2);
-    const offset = centerOffset - (currentSlide * cardWidth);
-    
-    track.style.transform = `translateX(${offset}px)`;
-    
     // Apply 3D transforms to each card based on distance from center
     cards.forEach((card, index) => {
       const distance = index - currentSlide;
       const absDistance = Math.abs(distance);
       
-      if (absDistance > 2) {
-        // Hide cards that are too far away
+      // Show cards within 3 positions (so we see center + 3 on each side)
+      if (absDistance > 3) {
         card.style.opacity = 0;
         card.style.pointerEvents = 'none';
+        card.style.transform = 'translateX(0) translateZ(-1000px) rotateY(0deg) scale(0.5)';
       } else {
         card.style.pointerEvents = 'auto';
         
-        // Calculate transforms for visible cards
-        const translateZ = -absDistance * 200;
-        const rotateY = distance * -25; // Negative for correct rotation direction
-        const scale = 1 - (absDistance * 0.15);
-        const opacity = 1 - (absDistance * 0.4);
+        // More pronounced 3D effect
+        let translateX = distance * 200; // Horizontal spacing
+        let translateZ = -absDistance * 300; // Depth - further back
+        let rotateY = distance * 35; // Rotation angle
+        let scale = 1 - (absDistance * 0.2); // Size scaling
+        let opacity = 1 - (absDistance * 0.25); // Visibility
+        
+        // Center card is most prominent
+        if (absDistance === 0) {
+          translateZ = 100; // Bring forward
+          scale = 1.1;
+          opacity = 1;
+        }
         
         card.style.transform = `
+          translateX(${translateX}px) 
           translateZ(${translateZ}px) 
           rotateY(${rotateY}deg) 
           scale(${scale})
