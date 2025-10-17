@@ -34,98 +34,84 @@ img {
 
 /* ========== Header ========== */
 header {
-  padding: 8rem 0 3rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 0;
-}
-
-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('header-background.jpg') center top/cover no-repeat;
-  mask-image: linear-gradient(to bottom, 
-    black 0%,
-    black 30%,
-    rgba(0, 0, 0, 0.8) 50%,
-    rgba(0, 0, 0, 0.5) 70%,
-    rgba(0, 0, 0, 0.2) 85%,
-    transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, 
-    black 0%,
-    black 30%,
-    rgba(0, 0, 0, 0.8) 50%,
-    rgba(0, 0, 0, 0.5) 70%,
-    rgba(0, 0, 0, 0.2) 85%,
-    transparent 100%);
-  z-index: 0;
-}
-
-header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, 
-    transparent 0%,
-    transparent 60%,
-    var(--background-dark) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.5rem;
-  margin-right: 3rem;
-  position: relative;
-  z-index: 2;
-}
-
-.header-logo {
-  height: 375px;
-  width: auto;
-}
-
-nav {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 1rem 1.5rem;
-  backdrop-filter: blur(5px);
-  z-index: 100;
+  z-index: 1000;
+  background: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.75rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.header-logo {
+  height: 50px;
+  width: auto;
+  display: block;
+  cursor: pointer;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  position: static;
+  background: transparent;
+  backdrop-filter: none;
+  padding: 0;
+}
+
 .nav-links {
   display: flex;
+  gap: 2.5rem;
   align-items: center;
 }
 
-nav a {
-  color: #ffffff;
-  margin: 0 1rem;
+.nav-links a {
+  color: var(--text-primary);
   text-decoration: none;
-  font-weight: bold;
-  transition: color var(--transition);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  position: relative;
+  margin: 0;
 }
 
-nav a.active,
-nav a:hover {
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-accent);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after, .nav-links a.active::after {
+  width: 100%;
+}
+
+.nav-links a:hover, .nav-links a.active {
   color: var(--primary-accent);
+}
+
+/* Add padding to body/main to account for fixed header */
+body {
+  padding-top: 0;
+}
+
+main.hero {
+  margin-top: 80px;
 }
 
 .search-container {
@@ -761,6 +747,34 @@ nav a:hover {
 }
 
 @media (max-width: 768px) {
+  .header-content {
+    padding: 0.75rem 1rem;
+  }
+  
+  .header-logo {
+    height: 40px;
+  }
+  
+  nav {
+    gap: 1.5rem;
+  }
+  
+  .nav-links {
+    gap: 1.5rem;
+  }
+  
+  .nav-links a {
+    font-size: 0.85rem;
+  }
+  
+  #search-input {
+    width: 180px;
+  }
+  
+  #search-results {
+    width: 300px;
+  }
+  
   .featured-section {
     padding: 0 1rem;
   }
