@@ -576,6 +576,8 @@ main.hero {
   margin: 4rem auto;
   padding: 0 2rem;
   position: relative;
+  perspective: 1500px;
+  perspective-origin: center;
 }
 
 .hero-buttons {
@@ -638,17 +640,16 @@ main.hero {
 }
 
 .carousel-container {
-  overflow: visible;
+  overflow: hidden;
   width: 100%;
   position: relative;
-  perspective: 2000px;
 }
 
 .carousel-track {
   display: flex;
   gap: 20px;
-  transition: transform 0.5s ease;
-  padding: 3rem 0;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 4rem 0;
   transform-style: preserve-3d;
 }
 
@@ -656,12 +657,14 @@ main.hero {
   min-width: 260px;
   flex-shrink: 0;
   cursor: pointer;
-  transition: all 0.5s ease;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
+  position: relative;
 }
 
 .featured-card:hover {
-  transform: translateY(-20px) translateZ(50px) rotateY(5deg);
+  transform: scale(1.05) !important;
+  z-index: 999 !important;
 }
 
 .featured-card-inner {

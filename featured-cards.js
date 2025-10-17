@@ -157,6 +157,7 @@
   function updateCarousel() {
     const track = document.getElementById('featuredCardsTrack');
     const dots = document.querySelectorAll('.pagination-dot');
+    const cards = document.querySelectorAll('.featured-card');
     
     if (!track) return;
     
@@ -165,6 +166,26 @@
     const offset = -currentSlide * cardWidth;
     
     track.style.transform = `translateX(${offset}px)`;
+    
+    // Apply 3D transforms to each card based on distance from center
+    cards.forEach((card, index) => {
+      const distance = index - currentSlide;
+      const absDistance = Math.abs(distance);
+      
+      // Calculate transforms
+      const translateZ = -absDistance * 150; // Cards further away move back
+      const rotateY = distance * 15; // Rotate cards based on position
+      const scale = Math.max(0.8, 1 - absDistance * 0.1); // Scale down distant cards
+      const opacity = Math.max(0.3, 1 - absDistance * 0.2); // Fade distant cards
+      
+      card.style.transform = `
+        translateZ(${translateZ}px) 
+        rotateY(${rotateY}deg) 
+        scale(${scale})
+      `;
+      card.style.opacity = opacity;
+      card.style.zIndex = FEATURED_COUNT - absDistance;
+    });
     
     // Update pagination dots
     dots.forEach((dot, index) => {
